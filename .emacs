@@ -1,4 +1,4 @@
-(add-to-list 'load-path "~/.emacs.d/local")
+(add-to-list 'load-path "~/emacs.git/local")
 
 (require 'package)
 (package-initialize)
@@ -13,7 +13,7 @@
 (require 'yasnippet)
 (yas/global-mode 1)
 (setq yas/trigger-key "C-c <tab>")
-(yas/load-directory "~/.emacs.d/snippets")
+(yas/load-directory "~/emacs.git/snippets")
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (require 'markdown-mode)
 
@@ -34,7 +34,7 @@
 		'(lambda()
 			(ensime-scala-mode-hook)
 			(yas/minor-mode-on)
-			(load-file "~/.emacs.d/local/enhance-scala-mode.el")
+			(load-file "~/emacs.git/local/enhance-scala-mode.el")
 			(ad-activate 'newline-and-indent)
 			(electric-pair-mode))))
 

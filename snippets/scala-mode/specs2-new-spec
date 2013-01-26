@@ -1,0 +1,15 @@
+# name: specs2 template
+# key: specs2
+# --
+import org.specs2.mutable._
+import org.specs2.runner.JUnitRunner
+import org.junit.runner.RunWith
+
+@RunWith(classOf[JUnitRunner])
+class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` extends Specification {
+  "$1" should {
+    "$2" in {
+      $3
+    }
+  }
+}
