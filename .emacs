@@ -1,4 +1,15 @@
+;; turn off the toolbar for GUI emacs
+(tool-bar-mode -1)
+
+;; turn off backup file creation
+(setq make-backup-files nil)
+
 (add-to-list 'load-path "~/emacs.git/local")
+
+(setq auto-mode-alist (cons '("\\.md$" . markdown-mode) auto-mode-alist))
+
+;; Local customizations
+(load-file "~/emacs.git/local/windows.el")
 
 (require 'package)
 (package-initialize)
@@ -12,15 +23,16 @@
 ;; Yasnippet
 (require 'yasnippet)
 (yas/global-mode 1)
-(setq yas/trigger-key "C-c <tab>")
+(setq yas-trigger-key "C-c TAB")
 (yas/load-directory "~/emacs.git/snippets")
-(add-to-list 'load-path "~/.emacs.d/vendor")
+
+(add-to-list 'load-path "~/emacs.git/vendor")
 (require 'markdown-mode)
 
 ;; Scala
 (defun scala-loader ()
 	"Loads all scala stuff"
-	(add-to-list 'load-path "~/.emacs.d/vendor/ensime/elisp")
+	(add-to-list 'load-path "~/emacs.git/vendor/ensime/elisp")
 	(require 'scala-mode2)
 	(require 'ensime)
 	;; Ensime save hooks
@@ -39,6 +51,9 @@
 			(electric-pair-mode))))
 
 (scala-loader)
+
+;; Clojure
+(add-hook 'clojure-mode-hook 'paredit-mode)
 
 ;; system-wide indentation
 (setq-default tab-width 2)
