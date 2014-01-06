@@ -1,5 +1,5 @@
 (defadvice newline-and-indent (after add-line-before-brace)
-	"Inserts extra line if next character is right curly brace"
+	"Inserts extra line if next character is closing curly brace or paren"
 	(if (looking-at "[})]")
 			(save-excursion 
 				(newline)
