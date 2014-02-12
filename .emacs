@@ -7,6 +7,10 @@
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
+;; system-wide indentation
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+
 (global-auto-revert-mode t)
 
 ;; color theme
@@ -28,6 +32,21 @@
 
 ;; Local customizations
 (load-file "~/emacs.git/local/windows.el")
+
+(defun editing-setup ()
+  (linum-mode)
+  (whitespace-mode))
+
+;; HTML
+(add-hook 'html-mode-hook 'editing-setup)
+
+;; Javascript indent to 2
+(setq js-indent-level 2)
+(add-hook 'js-mode-hook 'editing-setup)
+
+;; CSS indent to 2
+(setq css-indent-offset 2)
+(add-hook 'css-mode-hook 'editing-setup)
 
 ;; Dash
 (autoload 'dash-at-point "dash-at-point"
@@ -57,7 +76,7 @@
 	(setq ensime-source-buffer-saved-hook
 				'(lambda ()
 					 ;(ensime-refactor-organize-imports)
-					 (ensime-format-source)
+					 ;(ensime-format-source)
 					 ))
 
 	(add-hook 'scala-mode-hook
@@ -70,9 +89,6 @@
 			(electric-pair-mode))))
 
 (scala-loader)
-
-;; system-wide indentation
-(setq-default tab-width 2)
 
 ;; CoffeeScript custom tab width = 2
 (defun coffee-custom ()
@@ -88,7 +104,8 @@
 (require 'flymake-less)
 (defun less-custom ()
   "less-css-mode-hook"
-  (set (make-local-variable 'tab-width) 2))
+  (set (make-local-variable 'tab-width) 2)
+  (editing-setup))
 (add-hook 'less-css-mode-hook 'flymake-less-load)
 (add-hook 'less-css-mode-hook '(lambda() (less-custom)))
 
