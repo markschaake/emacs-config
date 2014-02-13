@@ -30,6 +30,9 @@
 
 (setq auto-mode-alist (cons '("\\.md$" . markdown-mode) auto-mode-alist))
 
+;; whitespace mode column width
+(setq whitespace-line-column 120)
+
 ;; Local customizations
 (load-file "~/emacs.git/local/windows.el")
 
@@ -81,7 +84,7 @@
 
 	(add-hook 'scala-mode-hook
 		'(lambda()
-			(linum-mode)
+			(editing-setup)
 			(ensime-scala-mode-hook)
 			(yas/minor-mode-on)
 			(load-file "~/emacs.git/local/enhance-scala-mode.el")
