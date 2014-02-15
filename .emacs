@@ -28,6 +28,9 @@
 
 (add-to-list 'load-path "~/emacs.git/local")
 
+;; tweak tabbar
+(load-file "~/emacs.git/local/tabbar-tweaks.el")
+
 (setq auto-mode-alist (cons '("\\.md$" . markdown-mode) auto-mode-alist))
 
 ;; whitespace mode column width
@@ -59,15 +62,6 @@
 (add-to-list 'dash-at-point-mode-alist '(html-mode . "html"))
 (add-to-list 'dash-at-point-mode-alist '(coffee-mode . "coffee"))
 (global-set-key "\C-cd" 'dash-at-point)
-
-;; Yasnippet
-(require 'yasnippet)
-(yas/global-mode 1)
-(setq yas-trigger-key "C-c TAB")
-(yas/load-directory "~/emacs.git/snippets")
-
-(add-to-list 'load-path "~/emacs.git/vendor")
-(require 'markdown-mode)
 
 ;; Scala
 (defun scala-loader ()
