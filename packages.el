@@ -12,12 +12,15 @@
    dash-at-point
    dired+
    ensime
+   js2-mode
    magit
    markdown-mode
    multi-term
    paredit
    projectile
    scala-mode2
+   skewer-mode
+   skewer-less
    tabbar
    web-mode
    yaml-mode

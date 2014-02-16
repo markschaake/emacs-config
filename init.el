@@ -32,7 +32,15 @@
 ;; windows
 (load-file "~/emacs.git/local/windows.el")
 
-(setq auto-mode-alist (cons '("\\.md$" . markdown-mode) auto-mode-alist))
+(setq auto-mode-alist
+      (cons
+       '("\\.md$" . markdown-mode)
+       auto-mode-alist))
+
+(setq auto-mode-alist
+      (cons
+       '("\\.js$" . js2-mode)
+       auto-mode-alist))
 
 (defun editing-setup ()
   (linum-mode)
@@ -40,14 +48,16 @@
 
 ;; HTML
 (add-hook 'html-mode-hook 'editing-setup)
+(add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; Javascript indent to 2
-(setq js-indent-level 2)
-(add-hook 'js-mode-hook 'editing-setup)
+(setq js2-mode-basic-offset 2)
+(add-hook 'js2-mode-hook 'skewer-mode)
+(add-hook 'js2-mode-hook 'editing-setup)
 
 ;; CSS indent to 2
-(setq css-indent-offset 2)
 (add-hook 'css-mode-hook 'editing-setup)
+(add-hook 'css-mode-hook 'skewer-css-mode)
 
 ;; Dash
 (autoload 'dash-at-point "dash-at-point"
@@ -74,6 +84,7 @@
 	(add-hook 'scala-mode-hook
 		'(lambda()
 			(editing-setup)
+      (subword-mode)
 			(ensime-scala-mode-hook)
 			(yas/minor-mode-on)
 			(load-file "~/emacs.git/local/enhance-scala-mode.el")
