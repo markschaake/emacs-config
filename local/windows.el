@@ -1,6 +1,6 @@
 ;; All custom window-related commands have key prefix C-c w
 
-(global-set-key (kbd "C-x w p") 'windmove-up)
-(global-set-key (kbd "C-x w n") 'windmove-down)
-(global-set-key (kbd "C-x w f") 'windmove-right)
-(global-set-key (kbd "C-x w b") 'windmove-left)
+(global-set-key (kbd "C-c bo p") 'windmove-up)
+(global-set-key (kbd "C-c o n") 'windmove-down)
+(global-set-key (kbd "C-c o f") 'windmove-right)
+(global-set-key (kbd "C-c o b") 'windmove-left)
