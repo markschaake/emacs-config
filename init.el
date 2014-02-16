@@ -5,6 +5,10 @@
 
 (add-to-list 'load-path "~/emacs.git/local/")
 
+(set-register ?e '(file . "~/emacs.git/.emacs"))
+
+(set-register ?i '(file . "~/emacs.git/init.el"))
+
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
