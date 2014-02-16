@@ -82,7 +82,7 @@
 	(setq ensime-source-buffer-saved-hook
 				'(lambda ()
 					 ;(ensime-refactor-organize-imports)
-					 ;(ensime-format-source)
+					 (ensime-format-source)
 					 ))
 
 	(add-hook 'scala-mode-hook
@@ -90,7 +90,6 @@
 			(editing-setup)
       (subword-mode)
 			(ensime-scala-mode-hook)
-			(yas/minor-mode-on)
 			(load-file "~/emacs.git/local/enhance-scala-mode.el")
 			(ad-activate 'newline-and-indent)
 			(electric-pair-mode))))
