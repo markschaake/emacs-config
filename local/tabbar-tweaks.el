@@ -3,9 +3,11 @@
 ;; This are setting for nice tabbar items
 ;; to have an idea of what it looks like http://imgur.com/b0SNN
 ;; inspired by Amit Patel screenshot http://www.emacswiki.org/pics/static/NyanModeWithCustomBackground.png
- 
+
 ;; Tabbar
 (require 'tabbar)
+(setq mouse-wheel-mode nil)
+
 ;; Tabbar settings
 (set-face-attribute
  'tabbar-default nil
@@ -35,7 +37,7 @@
  'tabbar-separator nil
  :background "gray20"
  :height 0.6)
- 
+
 ;; Change padding of the tabs
 ;; we also need to set separator to avoid overlapping tabs by highlighted tabs
 (custom-set-variables
@@ -56,5 +58,5 @@ That is, a string used to represent it on the tab bar."
        label (max 1 (/ (window-width)
                        (length (tabbar-view
                                 (tabbar-current-tabset)))))))))
- 
+
 (tabbar-mode 1)
