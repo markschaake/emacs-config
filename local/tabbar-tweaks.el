@@ -8,6 +8,10 @@
 (require 'tabbar)
 (setq mouse-wheel-mode nil)
 
+;; Bind navigation to control-arrow keys
+(global-set-key (kbd "M-[ d") 'tabbar-backward-tab)
+(global-set-key (kbd "M-[ c") 'tabbar-forward-tab)
+
 ;; Tabbar settings
 (set-face-attribute
  'tabbar-default nil
