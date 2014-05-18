@@ -5,6 +5,7 @@
        (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
            (package-install package))))
  '(coffee-mode
+   emmet-mode
    flymake-coffee
    less-css-mode
    flymake-less

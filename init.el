@@ -13,6 +13,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 (setq whitespace-line-column 120)
+(global-set-key (kbd "C-c C-c") 'whitespace-cleanup)
 
 ;; buffers
 ;; revert buffers when changed externally (like git checkout)
@@ -52,6 +53,7 @@
 
 ;; HTML
 (add-hook 'html-mode-hook 'editing-setup)
+(add-hook 'sgml-mode-hook 'emmet-mode)
 (add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; Javascript indent to 2
@@ -61,6 +63,7 @@
 
 ;; CSS indent to 2
 (add-hook 'css-mode-hook 'editing-setup)
+(add-hook 'css-mode-hook 'emmet-mode)
 (add-hook 'css-mode-hook 'skewer-css-mode)
 
 ;; Dash
