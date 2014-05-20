@@ -53,7 +53,6 @@
 
 ;; HTML
 (add-hook 'html-mode-hook 'editing-setup)
-(add-hook 'sgml-mode-hook 'emmet-mode)
 (add-hook 'html-mode-hook 'skewer-html-mode)
 
 ;; Javascript indent to 2
@@ -63,7 +62,6 @@
 
 ;; CSS indent to 2
 (add-hook 'css-mode-hook 'editing-setup)
-(add-hook 'css-mode-hook 'emmet-mode)
 (add-hook 'css-mode-hook 'skewer-css-mode)
 
 ;; Dash
