@@ -1,4 +1,11 @@
+(require 'package)
+(add-to-list 'package-archives
+         '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
 (mapc
  (lambda (package)
    (or (package-installed-p package)
@@ -7,10 +14,7 @@
  '(coffee-mode
    flymake-coffee
    less-css-mode
-   flymake-less
-   dash
-   dash-at-point
-   dired+
+   ;flymake-less
    ensime
    js2-mode
    magit
@@ -19,8 +23,6 @@
    paredit
    projectile
    scala-mode2
-   skewer-mode
-   skewer-less
    tabbar
    web-mode
    yaml-mode
