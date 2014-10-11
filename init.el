@@ -12,7 +12,7 @@
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
-(setq whitespace-line-column 120)
+(setq whitespace-line-column 100)
 (global-set-key (kbd "C-c C-c") 'whitespace-cleanup)
 
 ;; buffers
@@ -75,7 +75,7 @@
 	(setq ensime-source-buffer-saved-hook
 				'(lambda ()
 					 ;(ensime-refactor-organize-imports)
-					 (ensime-format-source)
+					 ;(ensime-format-source)
 					 ))
 
 	(add-hook 'scala-mode-hook
