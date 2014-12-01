@@ -23,6 +23,8 @@
 (setq-default tab-width 2)
 (setq whitespace-line-column 100)
 (global-set-key (kbd "C-c C-c") 'whitespace-cleanup)
+(global-set-key (kbd "C-j") 'newline-and-indent)
+(setq sh-basic-offset 2 sh-indentation 2)
 
 ;; buffers
 ;; revert buffers when changed externally (like git checkout)
