@@ -7,6 +7,8 @@
 
 (set-register ?i '(file . "~/emacs.git/init.el"))
 
+(set-register ?g '(file . "~/Dropbox/org/gtd.org"))
+
 (winner-mode t)
 
 ;; org-mode global key bindings
@@ -14,6 +16,7 @@
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+;(setq org-default-notes-file (concat org-directory "~/Dropbox/notes.org"))
 
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
