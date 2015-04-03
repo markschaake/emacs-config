@@ -7,7 +7,7 @@
 
 (set-register ?i '(file . "~/emacs.git/init.el"))
 
-(set-register ?g '(file . "~/Dropbox/org/gtd.org"))
+(set-register ?g '(file . "~/Dropbox/org/gtd/gtd.org"))
 
 (winner-mode t)
 
@@ -29,8 +29,11 @@
 ;; buffers
 ;; revert buffers when changed externally (like git checkout)
 (global-auto-revert-mode t)
-;; turn off backup file creation
-(setq make-backup-files nil)
+;; save backup and temp files in /temp
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; color theme
 (load-theme 'zenburn t)
@@ -45,9 +48,15 @@
 ;; turn on projectile globally
 (projectile-global-mode t)
 
+;; turn on elscreen globally
+(elscreen-start)
+(elscreen-separate-buffer-list-mode)
+
+;; use undo-tree
+(global-undo-tree-mode)
+
 ;; Local customizations
-;; tweak tabbar
-(load-file "~/emacs.git/local/tabbar-tweaks.el")
+
 ;; windows
 (load-file "~/emacs.git/local/windows.el")
 
@@ -63,23 +72,30 @@
 
 (defun editing-setup ()
   (linum-mode)
-  (whitespace-mode))
+  (whitespace-mode)
+)
 
-;; HTML
-(add-hook 'html-mode-hook 'editing-setup)
+;; web-mode
+(defun my-web-mode-hook ()
+  "Hooks for web-mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (editing-setup)
+)
+(add-hook 'web-mode-hook 'my-web-mode-hook)
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode))
 
 ;; Javascript indent to 2
 (setq js2-mode-basic-offset 2)
-(add-hook 'js2-mode-hook 'skewer-mode)
 (add-hook 'js2-mode-hook 'editing-setup)
-
-;; CSS indent to 2
-(add-hook 'css-mode-hook 'editing-setup)
 
 ;; Scala
 (defun scala-loader ()
 	"Loads all scala stuff"
-	(add-to-list 'load-path "~/emacs.git/vendor/ensime/elisp")
 	(require 'scala-mode2)
 	(require 'ensime)
 	;; Ensime save hooks
@@ -100,21 +116,19 @@
 
 (scala-loader)
 
-;; CoffeeScript custom tab width = 2
-(defun coffee-custom ()
-  "coffee-mode-hook"
-  (set (make-local-variable 'tab-width) 2)
-	(local-set-key (kbd "C-j") 'coffee-newline-and-indent))
-(add-hook 'coffee-mode-hook
-	  '(lambda() (coffee-custom)))
-(require 'flymake-coffee)
-(add-hook 'coffee-mode-hook 'flymake-coffee-load)
-
 ;; LESS CSS
-;(require 'flymake-less)
 (defun less-custom ()
   "less-css-mode-hook"
   (set (make-local-variable 'tab-width) 2)
   (editing-setup))
 (add-hook 'less-css-mode-hook 'flymake-less-load)
 (add-hook 'less-css-mode-hook '(lambda() (less-custom)))
+
+;; eshell tab-completion
+(add-hook
+ 'eshell-mode-hook
+ (lambda ()
+   (setq pcomplete-cycle-completions nil)))
+
+;; load any local overrides
+(load-file "~/emacs-local/init.el")
