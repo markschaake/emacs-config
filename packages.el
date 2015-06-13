@@ -13,13 +13,11 @@
    (or (package-installed-p package)
        (if (y-or-n-p (format "Package %s is missing. Install it? " package)) 
            (package-install package))))
- '(coffee-mode
-   elscreen
-   elscreen-separate-buffer-list
-   flymake-coffee
+ '(ace-jump-mode
    less-css-mode
    flymake-less
    ensime
+   git-gutter+-mode
    js2-mode
    magit
    markdown-mode
@@ -31,7 +29,5 @@
    tabbar
    undo-tree
    web-mode
-   yaml-mode
-   yasnippet
    zenburn-theme))
                      

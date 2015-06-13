@@ -11,6 +11,13 @@
 
 (winner-mode t)
 
+(set-variable 'sbt:program-name "/usr/local/bin/sbt")
+
+(when window-system
+  (speedbar t))
+
+(global-git-gutter+-mode t)
+
 ;; org-mode global key bindings
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
@@ -41,16 +48,15 @@
 ;; turn off the toolbar for GUI emacs
 (tool-bar-mode -1)
 
+;; ace-jump-mode key binding
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
 ;; turn on ido mode for awesome interactive stuff
 (ido-mode t)
 (setq ido-enable-flex-matching t)
 
 ;; turn on projectile globally
 (projectile-global-mode t)
-
-;; turn on elscreen globally
-(elscreen-start)
-(elscreen-separate-buffer-list-mode)
 
 ;; use undo-tree
 (global-undo-tree-mode)
@@ -71,9 +77,9 @@
        auto-mode-alist))
 
 (defun editing-setup ()
-  (linum-mode)
+  ;(linum-mode)
   (whitespace-mode)
-)
+  )
 
 ;; web-mode
 (defun my-web-mode-hook ()
@@ -113,6 +119,12 @@
 			(load-file "~/emacs.git/local/enhance-scala-mode.el")
 			(ad-activate 'newline-and-indent)
 			(electric-pair-mode))))
+
+(add-hook 'comint-mode-hook
+          (lambda ()
+            (define-key comint-mode-map "\C-w" 'comint-kill-region)
+            (define-key comint-mode-map [C-S-backspace]
+              'comint-kill-whole-line)))
 
 (scala-loader)
 
