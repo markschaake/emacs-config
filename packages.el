@@ -17,7 +17,7 @@
    less-css-mode
    flymake-less
    ensime
-   git-gutter+-mode
+   git-gutter+
    js2-mode
    magit
    markdown-mode

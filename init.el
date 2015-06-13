@@ -23,6 +23,8 @@
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
+
+(global-set-key "\C-t" 'multi-term)
 ;(setq org-default-notes-file (concat org-directory "~/Dropbox/notes.org"))
 
 ;; tabs and whitespace
