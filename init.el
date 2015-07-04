@@ -11,6 +11,9 @@
 
 (winner-mode t)
 
+;; prevent ediff to open multiple frames which is busted for some reason
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
 (set-variable 'sbt:program-name "/usr/local/bin/sbt")
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
@@ -28,7 +31,9 @@
                                         ;(when window-system
                                         ;  (speedbar t))
 
-(global-git-gutter+-mode t)
+;(global-git-gutter+-mode t)
+
+(global-set-key "\C-xg" 'magit-status)
 
 ;; org-mode global key bindings
 (global-set-key "\C-cl" 'org-store-link)
@@ -37,7 +42,7 @@
 (global-set-key "\C-cb" 'org-iswitchb)
 
 (global-set-key "\C-ct" 'multi-term)
-(setq org-default-notes-file (concat org-directory "~/Dropbox/notes.org"))
+;(setq org-default-notes-file (concat org-directory "~/Dropbox/notes.org"))
 
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
@@ -167,8 +172,6 @@
           (lambda ()
             ;; Use spaces, not tabs.
             (setq indent-tabs-mode nil)
-            ;; Keep M-TAB for `completion-at-point'
-            (define-key flyspell-mode-map "\M-\t" nil)
             ;; Pretty-print eval'd expressions.
             (define-key emacs-lisp-mode-map
               "\C-x\C-e" 'pp-eval-last-sexp)
