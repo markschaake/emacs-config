@@ -94,8 +94,9 @@
       (replace-match "\\1\n\\2"))
     (goto-line 3)
     ;; now remove duplicates
-    (while (search-forward-regexp "\\(import .*\\)\n\\(\\1\\)" nil t)
+    (while (search-forward-regexp "\\(import .*\\)\n\\(\\1\\)$" nil t)
       (replace-match "\\1"))))
+
 
 (defun current-line ()
   "Current line as string"

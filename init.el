@@ -131,7 +131,7 @@
   (setq ensime-source-buffer-saved-hook
         '(lambda ()
                                         ;(ensime-refactor-organize-imports)
-           (ai2-organize-imports)
+                                        ;(ai2-organize-imports)
                                         ;(ensime-format-source)
            ))
 
@@ -142,6 +142,7 @@
                (ensime-scala-mode-hook)
                (load-file "~/emacs.git/local/enhance-scala-mode.el")
                (ad-activate 'newline-and-indent)
+               (local-set-key (kbd "C-c C-f") 'ai2-organize-imports)
                (electric-pair-mode))))
 
 (add-hook 'comint-mode-hook
