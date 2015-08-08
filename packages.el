@@ -18,7 +18,6 @@
    flymake-less
    elscreen
    ensime
-   git-gutter+
    js2-mode
    magit
    markdown-mode

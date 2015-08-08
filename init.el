@@ -1,6 +1,8 @@
 ;; make sure all packages are loaded
 (load-file "~/emacs.git/packages.el")
 
+(load "~/emacs.git/ai2-imports.el")
+
 (add-to-list 'load-path "~/emacs.git/local/")
 
 (set-register ?e '(file . "~/emacs.git/.emacs"))
@@ -30,8 +32,6 @@
 
                                         ;(when window-system
                                         ;  (speedbar t))
-
-;(global-git-gutter+-mode t)
 
 (global-set-key "\C-xg" 'magit-status)
 
@@ -131,6 +131,7 @@
   (setq ensime-source-buffer-saved-hook
         '(lambda ()
                                         ;(ensime-refactor-organize-imports)
+           (ai2-organize-imports)
                                         ;(ensime-format-source)
            ))
 
