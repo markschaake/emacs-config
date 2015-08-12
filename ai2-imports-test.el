@@ -1,5 +1,26 @@
 (load-file "./ai2-imports.el")
 
+(ert-deftest ai2-fixup-curlies-test ()
+  (with-temp-buffer
+    (let ((contents "package foo
+
+import foo.bar
+import org.allenai.{something, else}
+import some.foo.bar.{hi}
+import java.what
+")
+          (expected "package foo
+
+import foo.bar
+import org.allenai.{ something, else }
+import some.foo.bar.{ hi }
+import java.what
+"))
+      (insert contents)
+      (ai2-fixup-curlies)
+      (should (string= expected (buffer-string))))))
+
+
 (ert-deftest ai2-collapse-imports-test ()
   (with-temp-buffer
     (let ((contents "package foo
@@ -84,6 +105,24 @@ import some.foo.bar
       (ai2-move-allenai-to-top)
       (should (string= expected (buffer-string))))))
 
+(ert-deftest ai2-move-allenai-to-top-already-at-top-test ()
+  (with-temp-buffer
+    (let ((contents "package foo
+
+import org.allenai.something
+import org.allenai.else
+import some.foo.bar
+")
+          (expected "package foo
+
+import org.allenai.something
+import org.allenai.else
+import some.foo.bar
+"))
+      (insert contents)
+      (ai2-move-allenai-to-top)
+      (should (string= expected (buffer-string))))))
+
 (ert-deftest ai2-move-allenai-to-top-no-match-test ()
   (with-temp-buffer
     (let ((contents "package foo
@@ -159,6 +198,29 @@ import foo.bar
 "))
       (insert contents)
       (ai2-newline-after "import java\..*")
+      (should (string= expected (buffer-string))))))
+
+(ert-deftest ai2-newline-after-multiple-matches-test ()
+  (with-temp-buffer
+    (let ((contents "package foo
+
+import org.allenai.something
+import some.foo.bar
+import java.what
+import java.not
+import scala.not
+")
+          (expected "package foo
+
+import org.allenai.something
+import some.foo.bar
+import java.what
+import java.not
+import scala.not
+
+"))
+      (insert contents)
+      (ai2-newline-after "\\(import java\..*\\|import scala\..*\\)")
       (should (string= expected (buffer-string))))))
 
 (ert-deftest ai2-newline-after-no-matches-test ()
@@ -264,6 +326,31 @@ import spray.json
 import java.net.URI
 import java.what
 import scala.concurrent.duration._
+"))
+      (insert contents)
+      (ai2-organize-imports)
+      (should (string= expected (buffer-string))))))
+
+(ert-deftest ai2-orgainize-imports-scala-no-java-test ()
+  (with-temp-buffer
+    (let ((contents "package foo
+
+import org.allenai.common.Config._
+import org.allenai.common.Logging
+import org.allenai.scholar.pipeline.spark._
+import org.apache.spark.rdd.RDD
+import scala.collection.mutable
+")
+          (expected "package foo
+
+import org.allenai.common.Config._
+import org.allenai.common.Logging
+import org.allenai.scholar.pipeline.spark._
+
+import org.apache.spark.rdd.RDD
+
+import scala.collection.mutable
+
 "))
       (insert contents)
       (ai2-organize-imports)
