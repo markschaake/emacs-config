@@ -107,7 +107,8 @@
        auto-mode-alist))
 
 (defun editing-setup ()
-                                        ;(linum-mode)
+  (linum-mode)
+  (hl-line-mode)
   (whitespace-mode)
   )
 
