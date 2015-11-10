@@ -29,5 +29,6 @@
    tabbar
    undo-tree
    web-mode
+   xclip-mode
    zenburn-theme))
                      

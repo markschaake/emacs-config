@@ -1,7 +1,14 @@
 ;; make sure all packages are loaded
 (load-file "~/emacs.git/packages.el")
 
+(xclip-mode 1)
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+
 (load "~/emacs.git/ai2-imports.el")
+
+(set-face-attribute 'default nil :height 100)
 
 (add-to-list 'load-path "~/emacs.git/local/")
 
