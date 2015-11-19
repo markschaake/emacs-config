@@ -60,6 +60,7 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 (setq whitespace-line-column 100)
+(setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab tab-mark newline-mark))
 (global-set-key (kbd "C-c C-c") 'whitespace-cleanup)
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (setq sh-basic-offset 2 sh-indentation 2)
@@ -110,6 +111,9 @@
       (cons
        '("\\.js$" . js2-mode)
        auto-mode-alist))
+
+;; Add a space padding to the linum gutter
+(setq linum-format "%d ")
 
 (defun editing-setup ()
   (linum-mode)
