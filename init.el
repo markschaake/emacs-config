@@ -8,6 +8,8 @@
 
 (load "~/emacs.git/ai2-imports.el")
 
+(load "~/emacs.git/local/ai2-scala-spec.el")
+
 (set-face-attribute 'default nil :height 100)
 
 (add-to-list 'load-path "~/emacs.git/local/")
@@ -40,7 +42,10 @@
                                         ;(when window-system
                                         ;  (speedbar t))
 
+;; Magit
 (global-set-key "\C-xg" 'magit-status)
+(require 'magit-gh-pulls)
+(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 ;; org-mode global key bindings
 (global-set-key "\C-cl" 'org-store-link)
@@ -93,8 +98,8 @@
 (load-file "~/emacs.git/local/windows.el")
 
 ;; turn on elscreen globally
-(elscreen-start)
-(elscreen-separate-buffer-list-mode)
+;(elscreen-start)
+;(elscreen-separate-buffer-list-mode)
 
 (setq auto-mode-alist
       (cons

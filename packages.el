@@ -18,8 +18,10 @@
    flymake-less
    elscreen
    ensime
+   eshell-git-prompt
    js2-mode
    magit
+   magit-gh-pulls
    markdown-mode
    multi-term
    paredit

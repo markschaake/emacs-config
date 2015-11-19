@@ -8,6 +8,11 @@
  '(custom-safe-themes
    (quote
     ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "3d6b08cd1b1def3cc0bc6a3909f67475e5612dba9fa98f8b842433d827af5d30" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(ensime-goto-test-config-defaults
+   (quote
+    (:test-class-names-fn ensime-goto-test--test-class-names :test-class-suffixes
+                          ("Spec" "Specification" "Test" "Check")
+                          :impl-class-name-fn ensime-goto-test--impl-class-name :impl-to-test-dir-fn ensime-goto-test--impl-to-test-dir :is-test-dir-fn ensime-goto-test--is-test-dir :test-template-fn ensime-goto-test--test-template-ai2-spec)))
  '(inhibit-startup-screen t)
  '(js2-basic-offset 2)
  '(org-agenda-custom-commands
