@@ -14,6 +14,10 @@
 
 (add-to-list 'load-path "~/emacs.git/local/")
 
+(add-hook 'dired-load-hook
+          (lambda ()
+            (load "dired-x")))
+
 (set-register ?e '(file . "~/emacs.git/.emacs"))
 
 (set-register ?i '(file . "~/emacs.git/init.el"))
@@ -48,6 +52,16 @@
 
 (global-set-key "\C-ct" 'eshell)
 (eshell-git-prompt-use-theme 'git-radar)
+
+;; Some initial langauges we want org-babel to support
+(setq org-src-fontify-natively t)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (sh . t)
+   (scala . t)
+   ))
+
 ;(setq org-default-notes-file (concat org-directory "~/Dropbox/notes.org"))
 
 ;; tabs and whitespace
