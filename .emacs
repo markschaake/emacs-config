@@ -4,6 +4,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(css-indent-offset 2)
  '(custom-safe-themes
    (quote
@@ -13,8 +14,11 @@
     (:test-class-names-fn ensime-goto-test--test-class-names :test-class-suffixes
                           ("Spec" "Specification" "Test" "Check")
                           :impl-class-name-fn ensime-goto-test--impl-class-name :impl-to-test-dir-fn ensime-goto-test--impl-to-test-dir :is-test-dir-fn ensime-goto-test--is-test-dir :test-template-fn ensime-goto-test--test-template-ai2-spec)))
+ '(fci-rule-color "yellow")
+ '(fci-rule-column 100)
  '(inhibit-startup-screen t)
  '(js2-basic-offset 2)
+ '(linum-format (quote dynamic) t)
  '(org-agenda-custom-commands
    (quote
     (("n" "Agenda and all TODO's"
@@ -35,7 +39,8 @@
     (("~/Dropbox/org/gtd/gtd.org" :maxlevel . 1)
      ("~/Dropbox/org/gtd/someday.org" :maxlevel . 2))))
  '(scala-mode-feature:electric-on-per-default t)
- '(tabbar-separator (quote (0.5))))
+ '(tabbar-separator (quote (0.5)))
+ '(tramp-default-method "ssh"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

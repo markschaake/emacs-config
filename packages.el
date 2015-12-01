@@ -19,6 +19,7 @@
    elscreen
    ensime
    eshell-git-prompt
+   fill-column-indicator
    js2-mode
    magit
    magit-gh-pulls

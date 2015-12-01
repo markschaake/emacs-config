@@ -33,27 +33,21 @@
 (setenv "PATH" (concat (getenv "PATH") ":/Library/PostgreSQL/9.4/bin"))
 (setq exec-path (append exec-path '("/Library/PostgreSQL/9.4/bin")))
 
-
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
             (sql-set-product 'postgres)
             (toggle-truncate-lines t)))
 
-                                        ;(when window-system
-                                        ;  (speedbar t))
+;; imenu
+(global-set-key (kbd "M-i") 'helm-imenu-in-all-buffers)
 
 ;; Magit
 (global-set-key "\C-xg" 'magit-status)
 (require 'magit-gh-pulls)
 (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
-;; org-mode global key bindings
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cb" 'org-iswitchb)
-
-(global-set-key "\C-ct" 'multi-term)
+(global-set-key "\C-ct" 'eshell)
+(eshell-git-prompt-use-theme 'git-radar)
 ;(setq org-default-notes-file (concat org-directory "~/Dropbox/notes.org"))
 
 ;; tabs and whitespace
@@ -61,8 +55,9 @@
 (setq-default tab-width 2)
 (setq whitespace-line-column 100)
 (setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab tab-mark newline-mark))
-(global-set-key (kbd "C-c C-c") 'whitespace-cleanup)
+
 (global-set-key (kbd "C-j") 'newline-and-indent)
+
 (setq sh-basic-offset 2 sh-indentation 2)
 
 ;; buffers
@@ -85,9 +80,12 @@
 
 ;; turn on ido mode for awesome interactive stuff
 (ido-mode t)
+(setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
 
 ;; turn on projectile globally
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
 (projectile-global-mode t)
 
 ;; use undo-tree
@@ -98,14 +96,15 @@
 ;; windows
 (load-file "~/emacs.git/local/windows.el")
 
-;; turn on elscreen globally
-;(elscreen-start)
-;(elscreen-separate-buffer-list-mode)
-
 (setq auto-mode-alist
       (cons
        '("\\.md$" . markdown-mode)
        auto-mode-alist))
+
+(add-hook 'markdown-mode-hook
+          '(lambda ()
+             (flyspell-mode)))
+                                 
 
 (setq auto-mode-alist
       (cons
@@ -115,11 +114,19 @@
 ;; Add a space padding to the linum gutter
 (setq linum-format "%d ")
 
-(defun editing-setup ()
+(defun editing-setup (&optional skip-fci)
+  "Common editing setup"
   (linum-mode)
+  (message "skip fci? %s" skip-fci)
+  (unless skip-fci (fci-mode))
   (hl-line-mode)
-  (whitespace-mode)
-  )
+  (whitespace-mode))
+
+(defun web-mode-newline-fixup ()
+  "Inserts a newline and reloads web-mode"
+  (interactive)
+  (newline-and-indent)
+  (web-mode-reload))
 
 ;; web-mode
 (defun my-web-mode-hook ()
@@ -127,7 +134,7 @@
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
-  (editing-setup)
+  (editing-setup t)
   )
 (add-hook 'web-mode-hook 'my-web-mode-hook)
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
