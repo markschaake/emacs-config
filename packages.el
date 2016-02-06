@@ -32,6 +32,7 @@
    tabbar
    undo-tree
    web-mode
+   which-key-mode
    xclip
    zenburn-theme))
                      

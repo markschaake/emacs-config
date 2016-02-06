@@ -3,9 +3,6 @@
 
 (xclip-mode 1)
 
-(when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
-
 (load "~/emacs.git/ai2-imports.el")
 
 (load "~/emacs.git/local/ai2-scala-spec.el")
@@ -44,6 +41,7 @@
 
 ;; imenu
 (global-set-key (kbd "M-i") 'helm-imenu-in-all-buffers)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Magit
 (global-set-key "\C-xg" 'magit-status)
@@ -98,8 +96,8 @@
 (setq ido-enable-flex-matching t)
 
 ;; turn on projectile globally
-(require 'helm-config)
-(global-set-key (kbd "M-x") 'helm-M-x)
+;(require 'helm-config)
+;(global-set-key (kbd "M-x") 'helm-M-x)
 (projectile-global-mode t)
 
 ;; use undo-tree
@@ -131,6 +129,8 @@
 (defun editing-setup (&optional skip-fci)
   "Common editing setup"
   (linum-mode)
+  (which-key-mode)
+  (rainbow-mode)
   (message "skip fci? %s" skip-fci)
   (unless skip-fci (fci-mode))
   (hl-line-mode)
@@ -172,10 +172,17 @@
                                         ;(ai2-organize-imports)
                                         ;(ensime-format-source)
            ))
+  (add-hook 'scala-mode-hook #'yas-minor-mode)
 
   (add-hook 'scala-mode-hook
             '(lambda()
                (editing-setup)
+               (company-mode)
+               (setq
+                company-dabbrev-ignore-case nil
+                company-dabbrev-code-ignore-case nil
+                company-dabbrev-downcase nil
+                company-idle-delay 0)
                (subword-mode)
                (ensime-scala-mode-hook)
                (load-file "~/emacs.git/local/enhance-scala-mode.el")

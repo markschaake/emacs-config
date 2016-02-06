@@ -18,7 +18,7 @@
  '(fci-rule-column 100)
  '(inhibit-startup-screen t)
  '(js2-basic-offset 2)
- '(linum-format (quote dynamic) t)
+ '(linum-format (quote dynamic))
  '(org-agenda-custom-commands
    (quote
     (("n" "Agenda and all TODO's"
@@ -39,6 +39,7 @@
     (("~/Dropbox/org/gtd/gtd.org" :maxlevel . 1)
      ("~/Dropbox/org/gtd/someday.org" :maxlevel . 2))))
  '(scala-mode-feature:electric-on-per-default t)
+ '(scroll-bar-mode nil)
  '(tabbar-separator (quote (0.5)))
  '(tramp-default-method "ssh"))
 (custom-set-faces
