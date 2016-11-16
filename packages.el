@@ -1,9 +1,18 @@
 (require 'package)
+(require 'use-package)
+
 (add-to-list 'package-archives
-         '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
-         '("marmalade" . "http://marmalade-repo.org/packages/") t)
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
+
 (package-initialize)
+
+(use-package ensime
+  :ensure t
+  :pin melpa-stable)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -17,7 +26,6 @@
    less-css-mode
    flymake-less
    elscreen
-   ensime
    eshell-git-prompt
    fill-column-indicator
    js2-mode
@@ -28,11 +36,11 @@
    paredit
    projectile
    rainbow-mode
-   scala-mode2
    tabbar
    undo-tree
+   use-package
    web-mode
-   which-key-mode
    xclip
    zenburn-theme))
                      
+

@@ -5,7 +5,7 @@
 
 (load "~/emacs.git/ai2-imports.el")
 
-(load "~/emacs.git/local/ai2-scala-spec.el")
+(load "~/emacs.git/local/schaake-scala-spec.el")
 
 (set-face-attribute 'default nil :height 100)
 
@@ -22,6 +22,8 @@
 (set-register ?g '(file . "~/Dropbox/org/gtd/gtd.org"))
 
 (winner-mode t)
+
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;; prevent ediff to open multiple frames which is busted for some reason
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -45,8 +47,8 @@
 
 ;; Magit
 (global-set-key "\C-xg" 'magit-status)
-(require 'magit-gh-pulls)
-(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
+;(require 'magit-gh-pulls)
+;(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 (global-set-key "\C-ct" 'eshell)
 (eshell-git-prompt-use-theme 'git-radar)
@@ -65,7 +67,7 @@
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
-(setq whitespace-line-column 100)
+(setq whitespace-line-column 120)
 (setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab tab-mark newline-mark))
 
 (global-set-key (kbd "C-j") 'newline-and-indent)
@@ -163,33 +165,24 @@
 ;; Scala
 (defun scala-loader ()
   "Loads all scala stuff"
-  (require 'scala-mode2)
-  (require 'ensime)
-  ;; Ensime save hooks
-  (setq ensime-source-buffer-saved-hook
-        '(lambda ()
-                                        ;(ensime-refactor-organize-imports)
-                                        ;(ai2-organize-imports)
-                                        ;(ensime-format-source)
-           ))
+    ;:commands ensime ensime-mode)
   (add-hook 'scala-mode-hook #'yas-minor-mode)
+  (add-hook 'scala-mode-hook 'ensime-mode)
+  (use-package ensime
+    :pin melpa-stable)
 
   (add-hook 'scala-mode-hook
             '(lambda()
                (editing-setup)
-               (company-mode)
-               (setq
-                company-dabbrev-ignore-case nil
-                company-dabbrev-code-ignore-case nil
-                company-dabbrev-downcase nil
-                company-idle-delay 0)
                (subword-mode)
-               (ensime-scala-mode-hook)
-               (load-file "~/emacs.git/local/enhance-scala-mode.el")
-               (ad-activate 'newline-and-indent)
-               (local-set-key (kbd "C-c C-f") 'ai2-organize-imports)
+               ;(ensime-scala-mode-hook)
+               ;(load-file "~/emacs.git/local/enhance-scala-mode.el")
+               ;(ad-activate 'newline-and-indent)
+               ;(local-set-key (kbd "C-c C-f") 'ai2-organize-imports)
+               (local-set-key (kbd "C-c C-f") 'ensime-refactor-diff-organize-imports)
                (electric-pair-mode))))
 
+; The following makes it possible to exit an ensime-sbt ~compile
 (add-hook 'comint-mode-hook
           (lambda ()
             (define-key comint-mode-map "\C-w" 'comint-kill-region)
