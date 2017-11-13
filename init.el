@@ -3,8 +3,6 @@
 
 (xclip-mode 1)
 
-(load "~/emacs.git/ai2-imports.el")
-
 (load "~/emacs.git/local/schaake-scala-spec.el")
 
 (set-face-attribute 'default nil :height 100)
@@ -15,11 +13,7 @@
           (lambda ()
             (load "dired-x")))
 
-(set-register ?e '(file . "~/emacs.git/.emacs"))
-
 (set-register ?i '(file . "~/emacs.git/init.el"))
-
-(set-register ?g '(file . "~/Dropbox/org/gtd/gtd.org"))
 
 (winner-mode t)
 
@@ -33,22 +27,22 @@
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
-(setenv "PATH" (concat (getenv "PATH") ":/Library/PostgreSQL/9.4/bin"))
-(setq exec-path (append exec-path '("/Library/PostgreSQL/9.4/bin")))
-
 (add-hook 'sql-interactive-mode-hook
           (lambda ()
             (sql-set-product 'postgres)
             (toggle-truncate-lines t)))
 
+;; er/expand-region
+(global-set-key (kbd "C-=") 'er/expand-region)
+
 ;; imenu
 (global-set-key (kbd "M-i") 'helm-imenu-in-all-buffers)
+(global-set-key (kbd "C-c C-h a p") 'helm-ag-project-root)
+(global-set-key (kbd "C-c C-h a f") 'helm-ag-this-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Magit
 (global-set-key "\C-xg" 'magit-status)
-;(require 'magit-gh-pulls)
-;(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 (global-set-key "\C-ct" 'eshell)
 (eshell-git-prompt-use-theme 'git-radar)
@@ -58,11 +52,9 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '(
-   (sh . t)
+   (shell . t)
    (scala . t)
    ))
-
-;(setq org-default-notes-file (concat org-directory "~/Dropbox/notes.org"))
 
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
@@ -91,6 +83,7 @@
 
 ;; ace-jump-mode key binding
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
 
 ;; turn on ido mode for awesome interactive stuff
 (ido-mode t)
@@ -101,6 +94,8 @@
 ;(require 'helm-config)
 ;(global-set-key (kbd "M-x") 'helm-M-x)
 (projectile-global-mode t)
+(defadvice projectile-project-root (around ignore-remote first activate)
+  (unless (file-remote-p default-directory) ad-do-it))
 
 ;; use undo-tree
 (global-undo-tree-mode)
@@ -137,6 +132,7 @@
   (unless skip-fci (fci-mode))
   (hl-line-mode)
   (whitespace-mode))
+  ;(goto-address-mode))
 
 (defun web-mode-newline-fixup ()
   "Inserts a newline and reloads web-mode"
@@ -157,29 +153,30 @@
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
 ;; Javascript indent to 2
 (setq js2-mode-basic-offset 2)
 (add-hook 'js2-mode-hook 'editing-setup)
 
+(set-variable 'ensime-startup-notification nil)
+(set-variable 'ensime-startup-snapshot-notification nil)
+
 ;; Scala
 (defun scala-loader ()
   "Loads all scala stuff"
-    ;:commands ensime ensime-mode)
-  (add-hook 'scala-mode-hook #'yas-minor-mode)
   (add-hook 'scala-mode-hook 'ensime-mode)
   (use-package ensime
-    :pin melpa-stable)
+    :pin melpa)
+    ;:pin melpa-stable)
 
   (add-hook 'scala-mode-hook
             '(lambda()
                (editing-setup)
                (subword-mode)
-               ;(ensime-scala-mode-hook)
-               ;(load-file "~/emacs.git/local/enhance-scala-mode.el")
-               ;(ad-activate 'newline-and-indent)
-               ;(local-set-key (kbd "C-c C-f") 'ai2-organize-imports)
+               (load-file "~/emacs.git/local/enhance-scala-mode.el")
                (local-set-key (kbd "C-c C-f") 'ensime-refactor-diff-organize-imports)
+               (local-set-key (kbd "C-c C-=") 'ensime-expand-selection-command)
                (electric-pair-mode))))
 
 ; The following makes it possible to exit an ensime-sbt ~compile
@@ -190,14 +187,6 @@
               'comint-kill-whole-line)))
 
 (scala-loader)
-
-;; LESS CSS
-(defun less-custom ()
-  "less-css-mode-hook"
-  (set (make-local-variable 'tab-width) 2)
-  (editing-setup))
-(add-hook 'less-css-mode-hook 'flymake-less-load)
-(add-hook 'less-css-mode-hook '(lambda() (less-custom)))
 
 ;; eshell tab-completion
 (add-hook

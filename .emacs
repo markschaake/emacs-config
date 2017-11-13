@@ -21,8 +21,9 @@
     (:test-class-names-fn ensime-goto-test--test-class-names :test-class-suffixes
                           ("Spec" "Specification" "Test" "Check")
                           :impl-class-name-fn ensime-goto-test--impl-class-name :impl-to-test-dir-fn ensime-goto-test--impl-to-test-dir :is-test-dir-fn ensime-goto-test--is-test-dir :test-template-fn ensime-goto-test--test-template-schaake-spec)))
- '(fci-rule-color "yellow")
- '(fci-rule-column 100)
+ '(fci-rule-color "gray40")
+ '(fci-rule-column 120)
+ '(fci-rule-width 2)
  '(inhibit-startup-screen t)
  '(js2-basic-offset 2)
  '(linum-format (quote dynamic))
@@ -45,34 +46,21 @@
    (quote
     (("~/Dropbox/org/gtd/gtd.org" :maxlevel . 1)
      ("~/Dropbox/org/gtd/someday.org" :maxlevel . 2))))
+ '(package-selected-packages
+   (quote
+    (helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree tabbar rainbow-mode projectile paredit multi-term markdown-mode magit-gh-pulls js2-mode flymake-less fill-column-indicator eshell-git-prompt ensime elscreen ace-jump-mode)))
  '(restclient-inhibit-cookies t)
  '(scala-mode-feature:electric-on-per-default t)
  '(scroll-bar-mode nil)
- '(sql-connection-alist
-   (quote
-    (("flex-dev"
-      (sql-product
-       (quote postgres))
-      (sql-user "flexdev")
-      (sql-password "flexdev")
-      (sql-server "localhost")
-      (sql-database "flex")
-      (sql-port 5432))
-     ("hendrix-dev"
-      (sql-product
-       (quote postgres))
-      (sql-user "hendrixdev")
-      (sql-password "hendrixdev")
-      (sql-server "localhost")
-      (sql-database "hendrix")
-      (sql-port 5432)))))
  '(sql-product (quote postgres))
  '(tabbar-separator (quote (0.5)))
- '(tramp-default-method "ssh"))
+ '(tramp-default-method "ssh" nil (tramp))
+ '(tramp-syntax (quote default) nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(hl-line ((t (:background "gray36"))))
  '(linum ((t (:background "#3F3F3F" :foreground "yellow")))))
 (put 'downcase-region 'disabled nil)

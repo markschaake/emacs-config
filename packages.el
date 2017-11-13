@@ -27,8 +27,10 @@
    flymake-less
    elscreen
    eshell-git-prompt
+   expand-region
    fill-column-indicator
    js2-mode
+   helm-ag
    magit
    magit-gh-pulls
    markdown-mode
@@ -40,7 +42,7 @@
    undo-tree
    use-package
    web-mode
+   which-key
    xclip
    zenburn-theme))
                      
-
