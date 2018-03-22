@@ -32,10 +32,10 @@
    js2-mode
    helm-ag
    magit
-   magit-gh-pulls
    markdown-mode
    multi-term
    paredit
+   popup-imenu
    projectile
    rainbow-mode
    tabbar

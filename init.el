@@ -36,9 +36,11 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; imenu
-(global-set-key (kbd "M-i") 'helm-imenu-in-all-buffers)
+(global-set-key (kbd "M-i") 'popup-imenu)
+(global-set-key (kbd "M-I") 'helm-imenu-in-all-buffers)
 (global-set-key (kbd "C-c C-h a p") 'helm-ag-project-root)
 (global-set-key (kbd "C-c C-h a f") 'helm-ag-this-file)
+(global-set-key (kbd "C-c C-h r") 'helm-resume)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Magit

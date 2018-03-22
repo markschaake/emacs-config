@@ -18,3 +18,12 @@
   (newline-and-indent))
 
 (global-set-key (kbd "C-c C-e w") 'sc-scala-wrap-case-class)
+
+(defun sc-sbt-do-re-start ()
+  "Execute the sbt `reStart' command for the project."
+  (interactive)
+  (sbt:command "reStart"))
+
+(global-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
+
+(global-set-key (kbd "C-c C-e w") 'sc-scala-wrap-case-class)
