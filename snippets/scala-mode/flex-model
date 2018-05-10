@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: flex-model
+# key: flex-model
+# --
+package schaake.flex.model
+
+final case class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`($1) {
+  $2
+}

@@ -15,6 +15,8 @@
 
 (set-register ?i '(file . "~/emacs.git/init.el"))
 
+(setq yas-snippet-dirs '("~/emacs.git/snippets"))
+
 (winner-mode t)
 
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
@@ -167,13 +169,15 @@
 ;; Scala
 (defun scala-loader ()
   "Loads all scala stuff"
-  (add-hook 'scala-mode-hook 'ensime-mode)
   (use-package ensime
     :pin melpa)
     ;:pin melpa-stable)
 
   (add-hook 'scala-mode-hook
             '(lambda()
+               (ensime-mode)
+               ;(setq prettify-symbols-alist scala-prettify-symbols-alist)
+               ;(prettify-symbols-mode)
                (editing-setup)
                (subword-mode)
                (load-file "~/emacs.git/local/enhance-scala-mode.el")
