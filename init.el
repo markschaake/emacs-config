@@ -24,7 +24,7 @@
 ;; prevent ediff to open multiple frames which is busted for some reason
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-(set-variable 'sbt:program-name "/usr/local/bin/sbt")
+(set-variable 'sbt:program-name "/usr/bin/sbt")
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -53,12 +53,13 @@
 
 ;; Some initial langauges we want org-babel to support
 (setq org-src-fontify-natively t)
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (shell . t)
-   (scala . t)
-   ))
+
+;(org-babel-do-load-languages
+; 'org-babel-load-languages
+; '(
+;   (shell . t)
+;   (scala . t)
+;   ))
 
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
