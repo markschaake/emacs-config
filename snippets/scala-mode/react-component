@@ -21,8 +21,8 @@ object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` 
   final case class Loaded($3) extends State
 
   class Backend($: BackendScope[Props, State]) {
-    def onPropsChange(prev: Option[Props], next: Props) = Callback.empty
-    val init = $.props >>= (p => onPropsChange(None, p))
+    def onPropsChange(p: Props, prev: Option[Props]) = if (Some(p) == prev) Callback.empty else Callback.empty
+    val init = $.props >>= (p => onPropsChange(p, None))
     val deinit = Callback.empty
     
     def render(p: Props, s: State) = s match {
@@ -36,7 +36,7 @@ object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` 
     .renderBackend[Backend]
     .componentDidMount(_.backend.init)
     .componentWillUnmount(_.backend.deinit)
-    .componentWillReceiveProps(i => i.backend.onPropsChange(Some(i.currentProps), i.nextProps))
+    .componentDidUpdate(i => i.backend.onPropsChange(i.currentProps, Some(i.prevProps)))
     .build
 
   def apply($2) = component(Props(${4:$2}))

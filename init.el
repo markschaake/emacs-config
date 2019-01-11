@@ -1,11 +1,14 @@
-;; make sure all packages are loaded
 (load-file "~/emacs.git/packages.el")
 
+(load-file "~/emacs.git/schaake-key-bindings.el")
+
+;; Allows yanked text to copy to clipboard (is this only needed on a mac?)
 (xclip-mode 1)
 
 (load "~/emacs.git/local/schaake-scala-spec.el")
 
-(set-face-attribute 'default nil :height 100)
+;; Customize the font size to 8 pt
+;(set-face-attribute 'default nil :height 80)
 
 (add-to-list 'load-path "~/emacs.git/local/")
 
@@ -18,8 +21,6 @@
 (setq yas-snippet-dirs '("~/emacs.git/snippets"))
 
 (winner-mode t)
-
-(global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 ;; prevent ediff to open multiple frames which is busted for some reason
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -34,40 +35,13 @@
             (sql-set-product 'postgres)
             (toggle-truncate-lines t)))
 
-;; er/expand-region
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-;; imenu
-(global-set-key (kbd "M-i") 'popup-imenu)
-(global-set-key (kbd "M-I") 'helm-imenu-in-all-buffers)
-(global-set-key (kbd "C-c C-h a p") 'helm-ag-project-root)
-(global-set-key (kbd "C-c C-h a f") 'helm-ag-this-file)
-(global-set-key (kbd "C-c C-h r") 'helm-resume)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
-;; Magit
-(global-set-key "\C-xg" 'magit-status)
-
-(global-set-key "\C-ct" 'eshell)
 (eshell-git-prompt-use-theme 'git-radar)
-
-;; Some initial langauges we want org-babel to support
-(setq org-src-fontify-natively t)
-
-;(org-babel-do-load-languages
-; 'org-babel-load-languages
-; '(
-;   (shell . t)
-;   (scala . t)
-;   ))
 
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
 (setq whitespace-line-column 120)
 (setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab tab-mark newline-mark))
-
-(global-set-key (kbd "C-j") 'newline-and-indent)
 
 (setq sh-basic-offset 2 sh-indentation 2)
 
@@ -86,10 +60,6 @@
 ;; turn off the toolbar for GUI emacs
 (tool-bar-mode -1)
 
-;; ace-jump-mode key binding
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-(define-key global-map (kbd "C-c C-SPC") 'ace-jump-mode)
-
 ;; turn on ido mode for awesome interactive stuff
 (ido-mode t)
 (setq ido-everywhere t)
@@ -101,7 +71,8 @@
 (projectile-global-mode t)
 (defadvice projectile-project-root (around ignore-remote first activate)
   (unless (file-remote-p default-directory) ad-do-it))
-
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
 ;; use undo-tree
 (global-undo-tree-mode)
 
@@ -118,21 +89,18 @@
 (add-hook 'markdown-mode-hook
           '(lambda ()
              (flyspell-mode)))
-                                 
 
 (setq auto-mode-alist
       (cons
        '("\\.js$" . js2-mode)
        auto-mode-alist))
 
-;; Add a space padding to the linum gutter
-(setq linum-format "%d ")
-
 (defun editing-setup (&optional skip-fci)
   "Common editing setup"
-  (linum-mode)
+  (display-line-numbers-mode)
   (which-key-mode)
   (rainbow-mode)
+  (show-paren-mode)
   (message "skip fci? %s" skip-fci)
   (unless skip-fci (fci-mode))
   (hl-line-mode)
@@ -182,7 +150,7 @@
                (editing-setup)
                (subword-mode)
                (load-file "~/emacs.git/local/enhance-scala-mode.el")
-               (local-set-key (kbd "C-c C-f") 'ensime-refactor-diff-organize-imports)
+               ;(local-set-key (kbd "C-c C-f") 'ensime-refactor-diff-organize-imports)
                (local-set-key (kbd "C-c C-=") 'ensime-expand-selection-command)
                (electric-pair-mode))))
 
@@ -208,6 +176,7 @@
           (lambda ()
             ;; Use spaces, not tabs.
             (setq indent-tabs-mode nil)
+            (company-mode)
             ;; Pretty-print eval'd expressions.
             (define-key emacs-lisp-mode-map
               "\C-x\C-e" 'pp-eval-last-sexp)
@@ -218,3 +187,4 @@
             (define-key emacs-lisp-mode-map
               "\r" 'reindent-then-newline-and-indent)))
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+(add-hook 'emacs-lisp-mode-hook 'editing-setup)
