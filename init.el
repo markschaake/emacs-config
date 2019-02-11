@@ -1,16 +1,18 @@
-(load-file "~/emacs.git/packages.el")
+;;; package --- Summary
+;;; Commentary:
+;;; Code:
 
-(load-file "~/emacs.git/schaake-key-bindings.el")
+(add-to-list 'load-path "~/emacs.git/")
+
+(require 'sc-packages)
+(require 'sc-windows)
+(require 'sc-key-bindings)
 
 ;; Allows yanked text to copy to clipboard (is this only needed on a mac?)
 (xclip-mode 1)
 
-(load "~/emacs.git/local/schaake-scala-spec.el")
-
 ;; Customize the font size to 8 pt
 ;(set-face-attribute 'default nil :height 80)
-
-(add-to-list 'load-path "~/emacs.git/local/")
 
 (add-hook 'dired-load-hook
           (lambda ()
@@ -18,14 +20,10 @@
 
 (set-register ?i '(file . "~/emacs.git/init.el"))
 
-(setq yas-snippet-dirs '("~/emacs.git/snippets"))
-
 (winner-mode t)
 
 ;; prevent ediff to open multiple frames which is busted for some reason
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-
-(set-variable 'sbt:program-name "/usr/bin/sbt")
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
@@ -34,8 +32,6 @@
           (lambda ()
             (sql-set-product 'postgres)
             (toggle-truncate-lines t)))
-
-(eshell-git-prompt-use-theme 'git-radar)
 
 ;; tabs and whitespace
 (setq-default indent-tabs-mode nil)
@@ -54,9 +50,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; color theme
-(load-theme 'zenburn t)
-
 ;; turn off the toolbar for GUI emacs
 (tool-bar-mode -1)
 
@@ -65,103 +58,6 @@
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
 
-;; turn on projectile globally
-;(require 'helm-config)
-;(global-set-key (kbd "M-x") 'helm-M-x)
-(projectile-global-mode t)
-(defadvice projectile-project-root (around ignore-remote first activate)
-  (unless (file-remote-p default-directory) ad-do-it))
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
-;; use undo-tree
-(global-undo-tree-mode)
-
-;; Local customizations
-
-;; windows
-(load-file "~/emacs.git/local/windows.el")
-
-(setq auto-mode-alist
-      (cons
-       '("\\.md$" . markdown-mode)
-       auto-mode-alist))
-
-(add-hook 'markdown-mode-hook
-          '(lambda ()
-             (flyspell-mode)))
-
-(setq auto-mode-alist
-      (cons
-       '("\\.js$" . js2-mode)
-       auto-mode-alist))
-
-(defun editing-setup (&optional skip-fci)
-  "Common editing setup"
-  (display-line-numbers-mode)
-  (which-key-mode)
-  (rainbow-mode)
-  (show-paren-mode)
-  (message "skip fci? %s" skip-fci)
-  (unless skip-fci (fci-mode))
-  (hl-line-mode)
-  (whitespace-mode))
-  ;(goto-address-mode))
-
-(defun web-mode-newline-fixup ()
-  "Inserts a newline and reloads web-mode"
-  (interactive)
-  (newline-and-indent)
-  (web-mode-reload))
-
-;; web-mode
-(defun my-web-mode-hook ()
-  "Hooks for web-mode."
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (editing-setup t)
-  )
-(add-hook 'web-mode-hook 'my-web-mode-hook)
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
-
-;; Javascript indent to 2
-(setq js2-mode-basic-offset 2)
-(add-hook 'js2-mode-hook 'editing-setup)
-
-(set-variable 'ensime-startup-notification nil)
-(set-variable 'ensime-startup-snapshot-notification nil)
-
-;; Scala
-(defun scala-loader ()
-  "Loads all scala stuff"
-  (use-package ensime
-    :pin melpa)
-    ;:pin melpa-stable)
-
-  (add-hook 'scala-mode-hook
-            '(lambda()
-               (ensime-mode)
-               ;(setq prettify-symbols-alist scala-prettify-symbols-alist)
-               ;(prettify-symbols-mode)
-               (editing-setup)
-               (subword-mode)
-               (load-file "~/emacs.git/local/enhance-scala-mode.el")
-               ;(local-set-key (kbd "C-c C-f") 'ensime-refactor-diff-organize-imports)
-               (local-set-key (kbd "C-c C-=") 'ensime-expand-selection-command)
-               (electric-pair-mode))))
-
-; The following makes it possible to exit an ensime-sbt ~compile
-(add-hook 'comint-mode-hook
-          (lambda ()
-            (define-key comint-mode-map "\C-w" 'comint-kill-region)
-            (define-key comint-mode-map [C-S-backspace]
-              'comint-kill-whole-line)))
-
-(scala-loader)
 
 ;; eshell tab-completion
 (add-hook
@@ -187,4 +83,6 @@
             (define-key emacs-lisp-mode-map
               "\r" 'reindent-then-newline-and-indent)))
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-(add-hook 'emacs-lisp-mode-hook 'editing-setup)
+(add-hook 'emacs-lisp-mode-hook 'sc-prog-mode)
+(provide 'init)
+;;; init.el ends here

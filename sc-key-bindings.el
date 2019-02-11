@@ -1,3 +1,7 @@
+;;; package --- Summary
+;;; Commentary:
+;;; Code:
+
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 (global-set-key (kbd "C-j") 'newline-and-indent)
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -14,5 +18,5 @@
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
-(provide 'schaake-key-bindings)
-;;; schaake-key-bindings.el ends here
+(provide 'sc-key-bindings)
+;;; sc-key-bindings.el ends here
