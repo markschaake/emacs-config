@@ -8,11 +8,11 @@
 (require 'sc-windows)
 (require 'sc-key-bindings)
 
+;; load any local overrides
+(load-file "~/emacs-local/init.el")
+
 ;; Allows yanked text to copy to clipboard (is this only needed on a mac?)
 (xclip-mode 1)
-
-;; Customize the font size to 8 pt
-;(set-face-attribute 'default nil :height 80)
 
 (add-hook 'dired-load-hook
           (lambda ()
@@ -57,16 +57,13 @@
 (setq ido-everywhere t)
 (setq ido-enable-flex-matching t)
 
-
 ;; eshell tab-completion
 (add-hook
  'eshell-mode-hook
  (lambda ()
    (setq pcomplete-cycle-completions nil)))
 
-;; load any local overrides
-(load-file "~/emacs-local/init.el")
-
+;; elisp setup
 (add-hook 'emacs-lisp-mode-hook
           (lambda ()
             ;; Use spaces, not tabs.
@@ -83,5 +80,6 @@
               "\r" 'reindent-then-newline-and-indent)))
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'emacs-lisp-mode-hook 'sc-prog-mode)
+
 (provide 'init)
 ;;; init.el ends here

@@ -1,15 +1,16 @@
-(require 'package)
-
+;;; package --- Summary
+;;; Commentary:
 ;;; Code:
+
+(require 'package)
+(require 'use-package)
 
 (mapc
  (lambda (package)
    (or (package-installed-p package)
-       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+       (if (y-or-n-p (format "Package %s is missing.  Install it? " package))
            (package-install package))))
  '(use-package))
-
-(require 'use-package)
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
