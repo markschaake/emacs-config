@@ -43,6 +43,7 @@
 (use-package helm-ag)
 (use-package magit)
 (use-package markdown-mode
+  :hook (markdown-mode . flyspell-mode)
   :config
   (setq auto-mode-alist
         (cons
@@ -90,8 +91,6 @@
 ;; Enable nice rendering of diagnostics like compile errors.
 (use-package flycheck
   :init (global-flycheck-mode))
-(use-package flyspell
-  :hook markdown-mode)
 
 (use-package lsp-mode)
 

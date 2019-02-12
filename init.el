@@ -38,7 +38,6 @@
 (setq-default tab-width 2)
 (setq whitespace-line-column 120)
 (setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab tab-mark newline-mark))
-
 (setq sh-basic-offset 2 sh-indentation 2)
 
 ;; buffers

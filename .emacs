@@ -57,7 +57,7 @@
    '(("~/Dropbox/org/gtd/gtd.org" :maxlevel . 1)
      ("~/Dropbox/org/gtd/someday.org" :maxlevel . 2)))
  '(package-selected-packages
-   '(use-pakckage yasnippet sbt-mode scala-mode lsp-scala company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt ace-jump-mode))
+   '(flyspell use-pakckage yasnippet sbt-mode scala-mode lsp-scala company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt ace-jump-mode))
  '(restclient-inhibit-cookies t)
  '(scala-mode-feature:electric-on-per-default t)
  '(scroll-bar-mode nil)
