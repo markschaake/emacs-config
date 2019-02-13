@@ -134,7 +134,6 @@
    'self-insert-command
    minibuffer-local-completion-map))
 
-
 (use-package lsp-scala
   :after scala-mode
   :demand t

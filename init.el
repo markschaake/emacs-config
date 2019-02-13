@@ -81,5 +81,10 @@
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'emacs-lisp-mode-hook 'sc-prog-mode)
 
+;; Built-in prog modes
+(add-hook 'nxml-mode-hook
+          (lambda ()
+            (sc-prog-mode)))
+
 (provide 'init)
 ;;; init.el ends here
