@@ -54,7 +54,8 @@
              (local-set-key (kbd "C-c C-b C-c") 'sc-sbt-compile)
              (local-set-key (kbd "C-c C-b t") 'sc-sbt-test-only-current-buffer)
              (local-set-key (kbd "C-c C-e w") 'sc-scala-wrap-case-class)
-             (local-set-key (kbd "C-c C-c r") 'lsp-ui-peek-find-references))
+             (local-set-key (kbd "C-c C-c r") 'lsp-ui-peek-find-references)
+             (local-set-key (kbd "C-c C-c f") 'lsp-format-buffer))
 
 (provide 'sc-enhance-scala-mode)
 ;;; sc-enhance-scala-mode.el ends here

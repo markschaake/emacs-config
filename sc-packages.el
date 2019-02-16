@@ -121,6 +121,10 @@
   :hook ((scala-mode . sc-prog-mode)
          (scala-mode . subword-mode)
          (scala-mode . sc-scala-set-local-keys))
+  :config
+  (add-hook 'scala-mode-hook
+          (lambda ()
+            (add-hook 'after-save-hook 'lsp-format-buffer nil 'make-it-local)))
   )
 
 (use-package sbt-mode
