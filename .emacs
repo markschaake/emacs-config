@@ -35,7 +35,7 @@
       nil)
      ("x" "Started TODOs" todo "STARTED" nil)))
  '(org-agenda-files
-   '("/home/markschaake/Dropbox/org/gtd/code-club.org" "/home/markschaake/Dropbox/org/gtd/flex.org" "/home/markschaake/Dropbox/org/gtd/gtd.org" "/home/markschaake/Dropbox/org/gtd/journal.org" "/home/markschaake/Dropbox/org/gtd/mark-capital.org" "/home/markschaake/Dropbox/org/gtd/personal.org" "/home/markschaake/Dropbox/org/gtd/schedule.org" "/home/markschaake/Dropbox/org/gtd/someday.org"))
+   '("/home/markschaake/Dropbox/org/gtd/code-club.org" "/home/markschaake/Dropbox/org/gtd/flex.org" "/home/markschaake/Dropbox/org/gtd/gtd.org" "/home/markschaake/Dropbox/org/gtd/journal.org" "/home/markschaake/Dropbox/org/gtd/mark-capital.org" "/home/markschaake/Dropbox/org/gtd/personal.org" "/home/markschaake/Dropbox/org/gtd/schedule.org" "/home/markschaake/Dropbox/org/gtd/someday.org" "/home/markschaake/Dropbox/org/gtd/woodworking.org" "/home/markschaake/Dropbox/org/gtd/schaake-brewing-company.org"))
  '(org-capture-templates
    '(("m" "Mark Capital Task" entry
       (file+headline "~/Dropbox/org/gtd/mark-capital.org" "Capture")
@@ -57,7 +57,7 @@
    '(("~/Dropbox/org/gtd/gtd.org" :maxlevel . 1)
      ("~/Dropbox/org/gtd/someday.org" :maxlevel . 2)))
  '(package-selected-packages
-   '(flyspell use-pakckage yasnippet sbt-mode scala-mode lsp-scala company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt ace-jump-mode))
+   '(cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode lsp-scala company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
  '(restclient-inhibit-cookies t)
  '(scala-mode-feature:electric-on-per-default t)
  '(scroll-bar-mode nil)
