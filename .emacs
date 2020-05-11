@@ -20,6 +20,8 @@
  '(inhibit-startup-screen t)
  '(js2-basic-offset 2)
  '(linum-format 'dynamic)
+ '(markdown-css-paths
+   '("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css"))
  '(mu4e-compose-dont-reply-to-self t)
  '(mu4e-headers-fields
    '((:human-date . 12)
@@ -56,9 +58,16 @@
  '(org-refile-targets
    '(("~/Dropbox/org/gtd/gtd.org" :maxlevel . 1)
      ("~/Dropbox/org/gtd/someday.org" :maxlevel . 2)))
+ '(package-archives
+   '(("melpa" . "http://melpa.milkbox.net/packages/")
+     ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+     ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode lsp-scala company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
+   '(htmlize auto-package-update ox-reveal forge csv-mode pyenv-mode elpy docker cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
+ '(pyvenv-workon "python-TihE9rGM")
  '(restclient-inhibit-cookies t)
+ '(sbt:program-name "/usr/bin/sbt")
+ '(sbt:program-options '("-Djline.terminal=none" "-Dsbt.supershell=false"))
  '(scala-mode-feature:electric-on-per-default t)
  '(scroll-bar-mode nil)
  '(sql-product 'postgres)

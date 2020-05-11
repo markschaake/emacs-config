@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: ss-react-component-simple
+# key: ss-react-component-simple
+# --
+package schaake.test.client.$1
+
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.html_<^._
+import schaake.test.client.Dsl._
+
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  object Style extends BaseStyle {
+    import dsl._
+
+    val main = style(padding(1.em))
+  }
+
+  final case class Props(${2:ctx: Context})
+
+  private val component = ScalaComponent.builder[Props]("`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`")
+    .render_P(p => <.div("hello"))
+    .build
+
+  def apply($2) = component(Props(${4:$2}))
+}

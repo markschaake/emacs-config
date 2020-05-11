@@ -19,6 +19,8 @@
             (load "dired-x")))
 
 (set-register ?i '(file . "~/emacs.git/init.el"))
+(set-register ?f '(file . "~/projects/flex"))
+(set-register ?s '(file . "~/projects/ss-toolkit"))
 
 (winner-mode t)
 
@@ -82,9 +84,9 @@
 (add-hook 'emacs-lisp-mode-hook 'sc-prog-mode)
 
 ;; Built-in prog modes
-(add-hook 'nxml-mode-hook
-          (lambda ()
-            (sc-prog-mode)))
+;(add-hook 'nxml-mode-hook
+;          (lambda ()
+;            (sc-prog-mode)))
 
 (provide 'init)
 ;;; init.el ends here

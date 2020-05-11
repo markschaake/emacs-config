@@ -1,15 +1,15 @@
 # -*- mode: snippet -*-
-# name: react-component
-# key: react-component
+# name: ss-react-component
+# key: ss-react-component
 # --
-package schaake.flex.client.$1
+package schaake.test.client.$1
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import schaake.flex.client.dsl._
+import schaake.test.client.Dsl._
 
 object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
-  object Style extends FlexBaseStyle {
+  object Style extends BaseStyle {
     import dsl._
 
     val main = style(padding(1.em))

@@ -49,14 +49,14 @@
 (defun sc-scala-set-local-keys ()
   "Set local key bindings for custom functions."
   (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
-             (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
-             (local-set-key (kbd "C-c C-b c") 'sc-sbt-compile)
-             (local-set-key (kbd "C-c C-b s") 'sbt-start)
-             (local-set-key (kbd "C-c C-b C-c") 'sc-sbt-compile)
-             (local-set-key (kbd "C-c C-b t") 'sc-sbt-test-only-current-buffer)
-             (local-set-key (kbd "C-c C-c w") 'sc-scala-wrap-case-class)
-             (local-set-key (kbd "C-c C-c r") 'lsp-find-references)
-             (local-set-key (kbd "C-c C-c f") 'lsp-format-buffer))
+  (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
+  (local-set-key (kbd "C-c C-b c") 'sc-sbt-compile)
+  (local-set-key (kbd "C-c C-b s") 'sbt-start)
+  (local-set-key (kbd "C-c C-b C-c") 'sc-sbt-compile)
+  (local-set-key (kbd "C-c C-b t") 'sc-sbt-test-only-current-buffer)
+  (local-set-key (kbd "C-c C-c w") 'sc-scala-wrap-case-class)
+  (local-set-key (kbd "C-c C-c r") 'lsp-find-references)
+  (local-set-key (kbd "C-c C-c f") 'lsp-format-buffer))
 
 (provide 'sc-enhance-scala-mode)
 ;;; sc-enhance-scala-mode.el ends here

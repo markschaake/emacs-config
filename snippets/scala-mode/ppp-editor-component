@@ -1,0 +1,41 @@
+# -*- mode: snippet -*-
+# name: ppp-editor-component
+# key: ppp-editor-component
+# --
+package schaake.sba.ppp.client.$1
+
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.html_<^._
+import schaake.sba.ppp.client.ClientDsl._
+import schaake.sba.ppp.model._
+import schaake.client.InputParsing._
+import schaake.client.components.Editor
+
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  object Style extends PPPBaseStyle {
+    import dsl._
+
+    val main = style(padding(1.em))
+  }
+
+  final case class Input($0) extends Editor.Model[${2:model}] {
+    private def get: $2 = ???
+    override def validate = {
+      val allErrors: Seq[ValidationError] = Nil
+      if (allErrors.isEmpty) valid(get)
+      else invalid(allErrors)
+    }  
+  }
+  object Input {
+    def empty(): Input = Input()
+    def apply(m: $2): Input = Input()
+  }
+  type Props = Editor.Props[Input]
+
+  private val component = ScalaComponent.builder[Props]("`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`")
+    .render_P(p => <.div("hello"))
+    .build
+
+  def apply(m: $2, onChange: Editor.OnChange[Input]) = component(new Props(Input(m), onChange))
+  def apply(onChange: Editor.OnChange[Input]) = component(new Props(Input.empty(), onChange))
+}

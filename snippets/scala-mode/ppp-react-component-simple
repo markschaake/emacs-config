@@ -1,15 +1,15 @@
 # -*- mode: snippet -*-
-# name: react-component-simple
-# key: react-component-simple
+# name: ppp-react-component-simple
+# key: ppp-react-component-simple
 # --
-package schaake.flex.client.$1
+package schaake.sba.ppp.client.$1
 
 import japgolly.scalajs.react._
 import japgolly.scalajs.react.vdom.html_<^._
-import schaake.flex.client.dsl._
+import schaake.sba.ppp.client.ClientDsl._
 
 object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
-  object Style extends FlexBaseStyle {
+  object Style extends PPPBaseStyle {
     import dsl._
 
     val main = style(padding(1.em))

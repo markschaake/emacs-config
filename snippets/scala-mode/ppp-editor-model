@@ -1,0 +1,23 @@
+# -*- mode: snippet -*-
+# name: ppp-editor-model
+# key: ppp-editor-model
+# --
+package schaake.sba.ppp.client.$1
+
+import schaake.sba.ppp.model._
+import schaake.client.InputParsing._
+import schaake.client.components.Editor
+
+final case class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`($0) extends Editor.Model[${2:model}] {
+  private def get: $2 = ???
+  override def validate = {
+    val allErrors: Seq[ValidationError] = Nil
+    if (allErrors.isEmpty) valid(get)
+    else invalid(allErrors)
+  }  
+}
+
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  def empty(): `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` = `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`()
+  def apply(m: $2): `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` = `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`()
+}

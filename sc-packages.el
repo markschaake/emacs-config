@@ -2,7 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
 (require 'package)
+(package-install 'use-package)
 (require 'use-package)
 
 (mapc
@@ -12,19 +16,17 @@
            (package-install package))))
  '(use-package))
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://melpa-stable.milkbox.net/packages/") t)
-
-(when (not package-archive-contents)
-  (package-refresh-contents))
+;; Auto-update all packages on startup
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 
 ;; Enable defer and ensure by default for use-package
 (setq use-package-always-defer t
       use-package-always-ensure t)
+(use-package thrift)
 (use-package avy)
 (use-package define-word)
 (use-package eshell-git-prompt
@@ -39,6 +41,10 @@
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 (use-package helm-ag)
 (use-package magit)
+(use-package forge
+  :config
+  (setq ghub-use-workaround-for-emacs-bug nil)
+  :after magit)
 (use-package markdown-mode
   :hook (markdown-mode . flyspell-mode)
   :config
@@ -73,7 +79,7 @@
 
 (use-package company-restclient
   :demand t
-  :after
+  :config
   (push 'company-restclient company-backends))
 
 (use-package slime
@@ -95,7 +101,7 @@
   (setq yas-snippet-dirs '("~/emacs.git/snippets")))
 (use-package zenburn-theme
   :demand t
-  :after
+  :config
   (load-theme 'zenburn t))
 
 ;; Enable nice rendering of diagnostics like compile errors.
@@ -107,6 +113,13 @@
   :hook ((scala-mode . lsp)
          (rust-mode . lsp))
   :config (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local))
+
+;; Python
+(use-package pyenv-mode)
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode))
@@ -128,7 +141,7 @@
 ;; Programming languages
 
 (use-package scala-mode
-  :mode "\\.s\\(cala\\|bt\\)$"
+  :mode "\\.s\\(cala\\|bt\\|c\\)$"
   :preface
   (require 'sc-enhance-scala-mode)
   :hook ((scala-mode . sc-prog-mode)
@@ -143,20 +156,10 @@
 (use-package sbt-mode
   :commands sbt-start sbt-command
   :config
-  ;; WORKAROUND: https://github.com/ensime/emacs-sbt-mode/issues/31
-  ;; allows using SPACE when in the minibuffer
-  (set-variable 'sbt:program-name "/usr/bin/sbt")
-  (substitute-key-definition
-   'minibuffer-complete-word
-   'self-insert-command
-   minibuffer-local-completion-map))
-
-(use-package lsp-scala
-  :after scala-mode
-  :demand t)
+  (set-variable 'sbt:program-name "/usr/bin/sbt"))
 
 (use-package company-lsp
-  :after
+  :config
   (push 'company-lsp company-backends))
 
 (use-package cargo)
@@ -166,6 +169,11 @@
   :hook (rust-mode . sc-prog-mode)
   :config
   (setq rust-indent-offset 2))
+
+;; Support for reveal.js backend for org-mode presentations
+(use-package ox-reveal
+  :after org-mode)
+(use-package htmlize)
 
 (provide 'sc-packages)
 ;;; sc-packages ends here
