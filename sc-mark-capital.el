@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(defvar sc-mark-capital-scan-dir "/home/markschaake/companies/mark-capital-finance/scans/")
+
 (defvar sc-mark-capital-scan-title-front-filename nil
   "File name to save front side of title.")
 (make-variable-buffer-local 'sc-mark-capital-scan-title-front-filename)
@@ -19,8 +21,7 @@
   (interactive)
   (let* ((contract (read-string "Contract number: "))
          (vin_last_four (read-string "VIN last 4: "))
-         (dest_dir "/home/markschaake/companies/mark-capital-finance/title-scans/")
-         (file_prefix (concat dest_dir contract "_" vin_last_four "_title")))
+         (file_prefix (concat sc-mark-capital-scan-dir contract "_" vin_last_four "_title")))
     (progn
       (message "Out file: %s" sc-mark-capital-scan-title-out-filename)
       (message "Will scan front of title now...")
@@ -55,20 +56,11 @@
           ))))
 
 (defun sc-mark-capital-scan-to-file ()
-  "Scan a title from the Brother printer."
+  "Scan a file from the Brother printer."
   (interactive)
   (let* ((file_name (read-string "File name: "))
-         (dest_dir "/home/markschaake/companies/mark-capital-finance/scans/")
-         (out_file (concat dest_dir file_name)))
-    (progn
-      (set-process-sentinel
-       (start-process "scan-to-file" "*scan-to-file*" "/home/markschaake/bin/scan-to-file.sh" out_file)
-       '(lambda (process event)
-          (if (string= "finished\n" event)
-              (message "FINISHED!")
-            (message "NOT FINISHED!"))))
-      (message (concat "Scanning file to " out_file))
-      )))
+         (out_file (concat sc-mark-capital-scan-dir file_name)))
+    (start-process "scan-to-file" "*scan-to-file*" "/home/markschaake/bin/scan-to-file.sh" out_file)))
 
 
 ;; Mark Capital

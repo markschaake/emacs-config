@@ -7,6 +7,9 @@
 (require 'sc-packages)
 (require 'sc-windows)
 (require 'sc-key-bindings)
+(require 'sc-mark-capital)
+(require 'sc-flex)
+(require 'sc-frames)
 
 ;; load any local overrides
 (load-file "~/emacs-local/init.el")

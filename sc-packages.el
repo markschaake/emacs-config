@@ -49,7 +49,8 @@
   :hook (markdown-mode . flyspell-mode)
   :config
   (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
-
+(use-package log4j-mode
+  :ensure t)
 (use-package multi-term)
 (use-package paredit)
 (use-package popup-imenu)
