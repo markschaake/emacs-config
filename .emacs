@@ -20,6 +20,14 @@
  '(inhibit-startup-screen t)
  '(js2-basic-offset 2)
  '(linum-format 'dynamic)
+ '(logview-additional-level-mappings
+   '(("Journalctl"
+      (error "ERROR")
+      (warning "WARN")
+      (information "INFO")
+      (debug "DEBUG")
+      (trace "   [ State ]: EDITED, shown value does not take effect until you set or save it.")
+      (aliases))))
  '(markdown-css-paths
    '("https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css"))
  '(mu4e-compose-dont-reply-to-self t)
@@ -59,11 +67,11 @@
    '(("~/Dropbox/org/gtd/gtd.org" :maxlevel . 1)
      ("~/Dropbox/org/gtd/someday.org" :maxlevel . 2)))
  '(package-archives
-   '(("melpa" . "http://melpa.milkbox.net/packages/")
-     ("melpa-stable" . "http://melpa-stable.milkbox.net/packages/")
+   '(("melpa" . "https://melpa.org/packages/")
+     ("melpa-stable" . "http://stable.melpa.org/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(log4j-mode htmlize auto-package-update ox-reveal forge csv-mode pyenv-mode elpy docker cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
+   '(all-the-icons lsp-metals ag log4j-mode htmlize auto-package-update ox-reveal forge csv-mode docker cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
  '(pyvenv-workon "python-TihE9rGM")
  '(restclient-inhibit-cookies t)
  '(sbt:program-name "/usr/bin/sbt")
@@ -72,7 +80,9 @@
  '(scroll-bar-mode nil)
  '(sql-product 'postgres)
  '(tabbar-separator '(0.5))
- '(tramp-default-method "ssh"))
+ '(tramp-default-method "ssh")
+ '(use-package-always-defer t)
+ '(use-package-always-ensure t))
  ;'(tramp-syntax (quote default))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -80,7 +90,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 80 :width normal :foundry "nil" :family "Menlo"))))
- '(ensime-implicit-highlight ((t (:underline "light gray"))))
  '(hl-line ((t (:background "gray36")))))
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)

@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: homeschool-model
+# key: hs-model
+# --
+package schaake.homeschool.client.model
+
+final case class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`($1)
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  import schaake.core.JsonProtocol._
+  //import Implicits._
+  val codec: Codec[`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`] = deriveCodec
+  implicit val (enc, dec, rw) = codec
+}

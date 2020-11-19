@@ -26,6 +26,8 @@
 ;; Enable defer and ensure by default for use-package
 (setq use-package-always-defer t
       use-package-always-ensure t)
+(use-package ag
+  :ensure t)
 (use-package thrift)
 (use-package avy)
 (use-package define-word)
@@ -33,7 +35,7 @@
   :config
   (eshell-git-prompt-use-theme 'powerline))
 (use-package expand-region)
-(use-package fill-column-indicator)
+
 (use-package js2-mode
   :hook (js2-mode . sc-prog-mode)
   :config
@@ -115,12 +117,15 @@
          (rust-mode . lsp))
   :config (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local))
 
+;; Add metals backend for lsp-mode
+(use-package lsp-metals)
+
 ;; Python
-(use-package pyenv-mode)
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
+;(use-package pyenv-mode)
+;(use-package elpy
+;  :ensure t
+;  :init
+;  (elpy-enable))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode))

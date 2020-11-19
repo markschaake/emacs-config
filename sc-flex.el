@@ -18,8 +18,14 @@
           (when (not (= 0 (process-exit-status proc)))
             (start-process "sc-flex-tail-prod" "*sc-flex-tail-prod*" "echo" "[ERROR] CONNECTION LOST" ">>" sc-flex--tail-file)))
         ))
-    (find-file sc-flex--tail-file)
-    (text-scale-set -2)))
+    (find-file-read-only sc-flex--tail-file)
+    ;(auto-revert-mode)
+    (text-scale-set -2)
+    (goto-char (point-max))
+    (log4j-start-filter "WARN ERROR warn error" "")
+    (windmove-down)
+    (text-scale-set -2)
+    (goto-char (point-max))))
 
 (provide 'sc-flex)
 ;;; sc-flex.el ends here

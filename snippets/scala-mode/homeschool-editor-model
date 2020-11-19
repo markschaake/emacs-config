@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: hs-editor-model
+# key: hs-editor-model
+# --
+package schaake.homeschool.client.$1
+
+import schaake.homeschool.model._
+import schaake.client.InputParsing._
+import schaake.client.components.Editor
+
+final case class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`($0) extends Editor.Model[${1:model}] {
+  override def validate = errorCollector()
+    .invalidOr()
+}
+
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  def empty(): `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` = `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`()
+  def apply(m: $1): `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` = `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`()
+}

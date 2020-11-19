@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: homeschool-enum
+# key: hs-enum
+# --
+package schaake.homeschool.client.model
+
+sealed abstract class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`(val id: String)
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  case object $1 extends `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`("$1")
+  case object $2 extends `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`("$2")
+  case object $3 extends `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`("$3")
+  case object $4 extends `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`("$4")
+  case object $5 extends `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`("$5")
+  
+
+  val all: Seq[`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`] = Seq(
+    $1, $2, $3, $4, $5
+  )
+
+  def withId(id: String): `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` = all.find(_.id == id).getOrElse(throw new IllegalArgumentException(s"Unknown id: $id"))
+
+  import schaake.core.JsonProtocol._
+  val codec: Codec[`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`] = deriveCodec
+  implicit val (enc, dec, rw) = codec
+}

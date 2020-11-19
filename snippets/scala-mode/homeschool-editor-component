@@ -1,0 +1,36 @@
+# -*- mode: snippet -*-
+# name: homeschool-editor-component
+# key: hs-editor-component
+# --
+package schaake.homeschool.client.$1
+
+import japgolly.scalajs.react._
+import japgolly.scalajs.react.vdom.html_<^._
+import schaake.homeschool.client.Dsl._
+import schaake.client.components.Editor
+import schaake.client.InputParsing._
+
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  object Style extends BaseStyle {
+    import dsl._
+
+    val main = style(padding(1.em))
+  }
+
+  final case class Input($0) extends Editor.Model[${2:model}] {
+    override def validate = errorCollector().invalidOr()
+  }
+  object Input {
+    def empty(): Input = Input()
+    def apply(m: $2): Input = Input()
+  }
+
+  type Props = Editor.Props[Input]
+
+  private val component = ScalaComponent.builder[Props]("`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`")
+    .render_P(p => <.div("hello"))
+    .build
+
+  def apply(m: $2, onChange: Editor.OnChange[Input]) = component(new Props(Input(m), onChange))
+  def apply(onChange: Editor.OnChange[Input]) = component(new Props(Input.empty(), onChange))
+}

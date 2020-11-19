@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: homeschool-json-codec
+# key: hs-json-codec
+# --
+import schaake.core.JsonProtocol._
+val codec: Codec[`(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`] = deriveCodec
+implicit val (enc, dec, rw) = codec
