@@ -4,11 +4,6 @@ Emacs config using org-mode babel
 
 * General settings
 
-** Local
-   #+BEGIN_SRC emacs-lisp
-     (load-file "~/emacs-local/init.el")
-   #+END_SRC
-   
 ** Global Font
    #+BEGIN_SRC emacs-lisp
      (add-to-list 'default-frame-alist '(font . "FiraCode"))
@@ -54,6 +49,10 @@ Emacs config using org-mode babel
      #+END_SRC
 *** Other
     #+BEGIN_SRC emacs-lisp
+      (defun sc-eshell-new ()
+        "Create a new eshell buffer."
+        (interactive)
+        (eshell "new-buffer"))
       (global-set-key [remap dabbrev-expand] 'hippie-expand)
       (global-set-key (kbd "C-j") 'newline-and-indent)
       (global-set-key (kbd "C-=") 'er/expand-region)
@@ -354,8 +353,6 @@ Emacs config using org-mode babel
    #+BEGIN_SRC emacs-lisp
      (use-package scala-mode
        :mode "\\.s\\(cala\\|bt\\|c\\)$"
-       :preface
-       (require 'sc-enhance-scala-mode)
        :hook ((scala-mode . sc-prog-mode)
               (scala-mode . subword-mode)
               (scala-mode . sc-scala-set-local-keys))
@@ -423,92 +420,26 @@ Emacs config using org-mode babel
        (local-set-key (kbd "C-c l r") 'lsp-find-references)
        (local-set-key (kbd "C-c l f") 'lsp-format-buffer))
    #+END_SRC
-
-* EXWM
-** Config
-   #+BEGIN_SRC emacs-lisp
-     (require 'exwm)
-     (require 'exwm-config)
-     (require 'exwm-randr)
-     (setq exwm-randr-workspace-output-plist '(0 "DP-0" 1 "DP-2"))
-     (exwm-randr-enable)
-     (require 'exwm-systemtray)
-     (exwm-systemtray-enable)
-
-     (unless (get 'exwm-workspace-number 'saved-value)
-       (setq exwm-workspace-number 4))
-     ;; Make class name the buffer name
-     (add-hook 'exwm-update-class-hook
-               (lambda ()
-                 (exwm-workspace-rename-buffer exwm-class-name)))
-     ;; Global keybindings.
-     (unless (get 'exwm-input-global-keys 'saved-value)
-       (setq exwm-input-global-keys
-             `(
-               ;; 's-r': Reset (to line-mode).
-               ([?\s-r] . exwm-reset)
-               ;; 's-w': Switch workspace.
-               ([?\s-w] . exwm-workspace-switch)
-               ;; 's-&': Launch application.
-               ([?\s-&] . (lambda (command)
-                            (interactive (list (read-shell-command "$ ")))
-                            (start-process-shell-command command nil command)))
-               ;; 's-N': Switch to certain workspace.
-               ,@(mapcar (lambda (i)
-                           `(,(kbd (format "s-%d" i)) .
-                             (lambda ()
-                               (interactive)
-                               (exwm-workspace-switch-create ,i))))
-                         (number-sequence 0 9)))))
-     ;; Line-editing shortcuts
-     (unless (get 'exwm-input-simulation-keys 'saved-value)
-       (setq exwm-input-simulation-keys
-             '(([?\C-b] . [left])
-               ([?\C-f] . [right])
-               ([?\C-p] . [up])
-               ([?\C-n] . [down])
-               ([?\C-a] . [home])
-               ([?\C-e] . [end])
-               ([?\M-v] . [prior])
-               ([?\C-v] . [next])
-               ([?\C-d] . [delete])
-               ([?\C-k] . [S-end delete]))))
-     ;; Enable EXWM
-     (exwm-enable)
-     ;; Configure Ido
-     (exwm-config-ido)
-     ;; Other configurations
-     (exwm-config-misc)
-   #+END_SRC
-
-** Monitors Setup
-   #+BEGIN_SRC emacs-lisp
-     (defun sc/setup-desktop-monitors ()
-       "Ensures monitors are laid out correctly."
-       (interactive)
-       (shell-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off"))
-   #+END_SRC
-
 ** Volume Keybindings
    #+BEGIN_SRC emacs-lisp
-     (defun sc/exwm-volume-up ()
-       "Increase volume for system."
-       (interactive)
-       (call-process-shell-command "amixer -D pulse sset Master 3%+" nil 0))
+     ;; (defun sc/exwm-volume-up ()
+     ;;   "Increase volume for system."
+     ;;   (interactive)
+     ;;   (call-process-shell-command "amixer -D pulse sset Master 3%+" nil 0))
 
-     (defun sc/exwm-volume-down ()
-       "Decrease volume for system."
-       (interactive)
-       (call-process-shell-command "amixer -D pulse sset Master 3%-" nil 0))
+     ;; (defun sc/exwm-volume-down ()
+     ;;   "Decrease volume for system."
+     ;;   (interactive)
+     ;;   (call-process-shell-command "amixer -D pulse sset Master 3%-" nil 0))
 
-     (defun sc/exwm-volume-mute ()
-       "Mute volume for system."
-       (interactive)
-       (call-process-shell-command "amixer -D pulse sset Master 0%" nil 0))
+     ;; (defun sc/exwm-volume-mute ()
+     ;;   "Mute volume for system."
+     ;;   (interactive)
+     ;;   (call-process-shell-command "amixer -D pulse sset Master 0%" nil 0))
 
-     (global-set-key (kbd "<XF86AudioRaiseVolume>") 'sc/exwm-volume-up)
-     (global-set-key (kbd "<XF86AudioLowerVolume>") 'sc/exwm-volume-down)
-     (global-set-key (kbd "<XF86AudioMute>") 'sc/exwm-volume-mute)
+     ;; (global-set-key (kbd "<XF86AudioRaiseVolume>") 'sc/exwm-volume-up)
+     ;; (global-set-key (kbd "<XF86AudioLowerVolume>") 'sc/exwm-volume-down)
+     ;; (global-set-key (kbd "<XF86AudioMute>") 'sc/exwm-volume-mute)
    #+END_SRC
 
 ** X-Window Auto-Layouts
@@ -516,43 +447,30 @@ Emacs config using org-mode babel
    
 *** Launcing browser windows
     #+BEGIN_SRC emacs-lisp
-      (defun sc/launch-google-chrome (profile &optional url new-window)
+      (defun sc/launch-google-chrome (profile &optional url new-window app-mode)
         "Launches a browser window for profile PROFILE. If NEW-WINDOW is set, then a new window is launched."
-        (start-process-shell-command "google-chrome" nil (concat "google-chrome " url " --profile-directory=" profile)))
+        (start-process-shell-command "google-chrome" nil (concat "google-chrome " (if app-mode "--app=" "") url " --profile-directory=" profile)))
 
-      (defun sc/launch-google-chrome-mc (&optional url new-window)
+      (defun sc/launch-google-chrome-mc (&optional url new-window app-mode)
         "Launches a browser window for Mark Capital profile. If NEW-WINDOW is set, then a new window is launched."
         (interactive)
-        (sc/launch-google-chrome "Profile\\ 1" url new-window))
+        (sc/launch-google-chrome "Profile\\ 1" url new-window app-mode))
 
-      (defun sc/launch-google-chrome-ss (&optional url new-window)
+      (defun sc/launch-google-chrome-ss (&optional url new-window app-mode)
         "Launches a browser window for Schaake Solutions profile. If NEW-WINDOW is set, then a new window is launched."
         (interactive)
-        (sc/launch-google-chrome "Profile\\ 2" url new-window))
+        (sc/launch-google-chrome "Profile\\ 2" url new-window app-mode))
 
-      (defun sc/launch-google-chrome-personal (&optional url new-window)
+      (defun sc/launch-google-chrome-personal (&optional url new-window app-mode)
         "Launches a browser window for personal profile. If NEW-WINDOW is set, then a new window is launched."
         (interactive)
-        (sc/launch-google-chrome "Default" url new-window))
+        (sc/launch-google-chrome "Default" url new-window app-mode))
 
       (global-set-key (kbd "C-c g p") 'sc/launch-google-chrome-personal)
       (global-set-key (kbd "C-c g m") 'sc/launch-google-chrome-mc)
       (global-set-key (kbd "C-c g s") 'sc/launch-google-chrome-ss)
     #+END_SRC
 
-*** Mark Capital
-    #+BEGIN_SRC emacs-lisp
-      (defun sc/exwm-windows-mc-init ()
-        "Opens two Google Chrome browser windows: one for chat and one for FLEX."
-        (interactive)
-        (let ((profile-dir "Profile\\ 1"))
-          (progn
-            (start-process-shell-command "google-chrome" nil (concat "google-chrome --app=https://chat.google.com --profile-directory=" profile-dir))
-            (split-window-right 100)
-            (windmove-right)
-            (start-process-shell-command "google-chrome" nil (concat "google-chrome https://www.flex.finance --new-window --profile-directory=" profile-dir)))))
-    #+END_SRC   
-   
 * Schaake Solutions
 
 ** FLEX
@@ -652,14 +570,18 @@ Emacs config using org-mode babel
            (sc/flex-tail-prod)
            (windmove-left)
            (split-window-below -15)
-           (mu4e))))
+           (mu4e)
+           (shell-command "/home/markschaake/bin/restart-offlineimap.sh"))))
 
      (defun sc/windows-mk-mc ()
        "Make frames with Mark Capital browser windows."
        (interactive)
-       (progn
-         (split-window-right)
-         (windmove-right)))
+       (let ((profile-dir "Profile\\ 1"))
+         (progn
+           (sc/launch-google-chrome-mc "https://chat.google.com" t t)
+           (split-window-right 100)
+           (windmove-right)
+           (sc/launch-google-chrome-mc "https://www.flex.finance" t))))
 
      (global-set-key (kbd "C-c w d") 'sc/windows-mk-dashboard)
      (global-set-key (kbd "C-c w s") 'sc/windows-mk-toolkit)
@@ -668,3 +590,75 @@ Emacs config using org-mode babel
      (global-set-key (kbd "C-c w h") 'sc/windows-mk-homeschool)
      (global-set-key (kbd "C-c w m") 'sc/windows-mk-servicepro)
   #+END_SRC
+* Window Management
+
+** EXWM Configuration
+   #+BEGIN_SRC emacs-lisp
+     (defun sc/setup-desktop-monitors ()
+       "Ensures monitors are laid out correctly."
+       (interactive)
+       (shell-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off"))
+
+     (require 'exwm)
+     (add-hook 'exwm-update-class-hook
+               (lambda ()
+                 (exwm-workspace-rename-buffer exwm-class-name)))
+     ;; RANDR
+     (require 'exwm-randr)
+     (setq exwm-randr-workspace-output-plist '(1 "DP-0" 0 "DP-2"))
+     (add-hook 'exwm-randr-screen-change-hook
+               (lambda ()
+                 (start-process-shell-command "xrandr" nil "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off")))
+     (exwm-randr-enable)
+
+     ;; System tray
+     (require 'exwm-systemtray)
+     (setq exwm-systemtray-height 32)
+     (exwm-systemtray-enable)
+
+     ;; Global keybindings.
+     (unless (get 'exwm-input-global-keys 'saved-value)
+       (setq exwm-input-global-keys
+             `(
+               ;; 's-r': Reset (to line-mode).
+               ([?\s-r] . exwm-reset)
+               ;; 's-m': fixup dual monitors
+               ([?\s-m] . sc/setup-desktop-monitors)
+               ;; 's-w': Switch workspace.
+               ([?\s-w] . exwm-workspace-switch)
+               ;; 's-&': Launch application.
+               ([?\s-&] . (lambda (command)
+                            (interactive (list (read-shell-command "$ ")))
+                            (start-process-shell-command command nil command)))
+               ;; 's-N': Switch to certain workspace.
+               ,@(mapcar (lambda (i)
+                           `(,(kbd (format "s-%d" i)) .
+                             (lambda ()
+                               (interactive)
+                               (exwm-workspace-switch-create ,i))))
+                         (number-sequence 0 9)))))
+     ;; Line-editing shortcuts
+     (unless (get 'exwm-input-simulation-keys 'saved-value)
+       (setq exwm-input-simulation-keys
+             '(([?\C-b] . [left])
+               ([?\C-f] . [right])
+               ([?\C-p] . [up])
+               ([?\C-n] . [down])
+               ([?\C-a] . [home])
+               ([?\C-e] . [end])
+               ([?\M-v] . [prior])
+               ([?\C-v] . [next])
+               ([?\C-d] . [delete])
+               ([?\C-k] . [S-end delete]))))
+     (exwm-enable)
+     (require 'exwm-config)
+     (exwm-config-ido)
+     ;; Other configurations
+     (exwm-config-misc)
+   #+END_SRC
+
+** Desktop Environment
+   #+BEGIN_SRC emacs-lisp
+     (require 'desktop-environment)
+     (desktop-environment-mode)
+   #+END_SRC
