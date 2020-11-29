@@ -1,664 +1,680 @@
-#+STARTUP: hidestars
-
 Emacs config using org-mode babel
 
 * General settings
 
+** Global Tab Bar Mode for managing workspaces
+#+begin_src emacs-lisp :tangle yes
+  (tab-bar-mode)
+#+end_src
+
 ** Global Font
-   #+BEGIN_SRC emacs-lisp
-     (add-to-list 'default-frame-alist '(font . "FiraCode"))
-     (set-face-attribute 'default nil :height 80)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-to-list 'default-frame-alist '(font . "FiraCode"))
+  (set-face-attribute 'default nil :height 80)
+#+END_SRC
 
 ** PATH
-   #+BEGIN_SRC emacs-lisp
-     (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-     (setq exec-path (append exec-path '("/usr/local/bin")))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (setq exec-path (append exec-path '("/usr/local/bin")))
+#+END_SRC
 
 ** Tabs and Whitespace
-   #+BEGIN_SRC emacs-lisp
-     (setq-default indent-tabs-mode nil)
-     (setq-default tab-width 2)
-     (setq whitespace-line-column 120)
-     (setq whitespace-style '(face tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab tab-mark newline-mark))
-     (setq sh-basic-offset 2 sh-indentation 2)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 2)
+  (setq whitespace-line-column 120)
+  (setq whitespace-style
+        '(face tabs trailing lines-tail space-before-tab newline indentation empty space-after-tab tab-mark newline-mark))
+  (setq sh-basic-offset 2 sh-indentation 2)
+#+END_SRC
 
 ** Revert buffers on external changes
-   Revert buffers when changed externally (like git checkout)
-   #+BEGIN_SRC emacs-lisp
-     (global-auto-revert-mode t)
-     ;; save backup and temp files in /temp
-     (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
-     (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-   #+END_SRC
+Revert buffers when changed externally (like git checkout)
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (global-auto-revert-mode t)
+  ;; save backup and temp files in /temp
+  (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+  (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+#+END_SRC
 ** Global Key Bindings
 *** Windows
-     #+BEGIN_SRC emacs-lisp
-       (defun kill-this-buffer-and-delete-window ()
-         "Kill the current buffer and deletes the window."
-         (interactive)
-         (kill-this-buffer)
-         (delete-window nil))
-       (global-set-key (kbd "C-c o p") 'windmove-up)
-       (global-set-key (kbd "C-c o n") 'windmove-down)
-       (global-set-key (kbd "C-c o f") 'windmove-right)
-       (global-set-key (kbd "C-c o b") 'windmove-left)
-       (global-set-key (kbd "C-c o k") 'kill-this-buffer-and-delete-window)
-     #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun kill-this-buffer-and-delete-window ()
+    "Kill the current buffer and deletes the window."
+    (interactive)
+    (kill-this-buffer)
+    (delete-window nil))
+  (global-set-key (kbd "C-c o p") 'windmove-up)
+  (global-set-key (kbd "C-c o n") 'windmove-down)
+  (global-set-key (kbd "C-c o f") 'windmove-right)
+  (global-set-key (kbd "C-c o b") 'windmove-left)
+  (global-set-key (kbd "C-c o k") 'kill-this-buffer-and-delete-window)
+#+END_SRC
 *** Other
-    #+BEGIN_SRC emacs-lisp
-      (defun sc-eshell-new ()
-        "Create a new eshell buffer."
-        (interactive)
-        (eshell "new-buffer"))
-      (global-set-key [remap dabbrev-expand] 'hippie-expand)
-      (global-set-key (kbd "C-j") 'newline-and-indent)
-      (global-set-key (kbd "C-=") 'er/expand-region)
-      (global-set-key (kbd "M-i") 'popup-imenu)
-      (global-set-key (kbd "M-I") 'helm-imenu-in-all-buffers)
-      (global-set-key (kbd "C-x C-b") 'ibuffer)
-      (global-set-key "\C-xg" 'magit-status)
-      (global-set-key "\C-xt" 'sc-eshell-new)
-      (global-set-key (kbd "C-c l") 'org-store-link)
-      (global-set-key (kbd "C-c a") 'org-agenda)
-      (global-set-key (kbd "C-c c") 'org-capture)
-      (global-set-key (kbd "C-:") 'avy-goto-char)
-      (global-set-key (kbd "C-'") 'avy-goto-char-2)
-    #+END_SRC
+#+begin_src emacs-lisp :tangle yes
+  (defun sc-eshell-new ()
+    "Create a new eshell buffer."
+    (interactive)
+    (eshell "new-buffer"))
+  (global-set-key [remap dabbrev-expand] 'hippie-expand)
+  (global-set-key (kbd "C-j") 'newline-and-indent)
+  (global-set-key (kbd "C-=") 'er/expand-region)
+  (global-set-key (kbd "M-i") 'popup-imenu)
+  (global-set-key (kbd "M-I") 'helm-imenu-in-all-buffers)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-c C-g") 'magit-status)
+  (global-set-key (kbd "C-c t") 'sc-eshell-new)
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-:") 'avy-goto-char)
+  (global-set-key (kbd "C-'") 'avy-goto-char-2)
+  (global-set-key (kbd "C-c y i") 'yas-insert-snippet)
+#+end_src
 * UI
 ** Toolbar Off
-   #+BEGIN_SRC emacs-lisp
-     (tool-bar-mode -1)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (tool-bar-mode -1)
+#+END_SRC
 ** Theme
-   #+BEGIN_SRC emacs-lisp
-     (use-package zenburn-theme
-       :demand t
-       :config
-       (load-theme 'zenburn t))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package zenburn-theme
+    :demand t
+    :config
+    (load-theme 'zenburn t))
+#+END_SRC
 ** Mode Line
-   #+BEGIN_SRC emacs-lisp
-     (defface sc-display-time
-       '((((type x w32 mac))
-          (:foreground "#ffffff" :inherit bold))
-         (((type tty))
-          (:foreground "#ffffff")))
-       "Face used to display the time in the mode line.")
-     (setq display-time-string-forms '((propertize (concat month "/" day "/" year " " 12-hours ":" minutes " " am-pm) 'face 'sc-display-time)))
-     (display-time-mode 1)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defface sc-display-time
+    '((((type x w32 mac))
+       (:foreground "#ffffff" :inherit bold))
+      (((type tty))
+       (:foreground "#ffffff")))
+    "Face used to display the time in the mode line.")
+  (setq display-time-string-forms '((propertize (concat month "/" day "/" year " " 12-hours ":" minutes " " am-pm) 'face 'sc-display-time)))
+  (display-time-mode 1)
+#+END_SRC
 
 ** Fill column indicator
-   #+BEGIN_SRC emacs-lisp
-     (display-fill-column-indicator-mode t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (display-fill-column-indicator-mode t)
+#+END_SRC
 
 ** Display line numbers when programming
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+#+END_SRC
 
 ** Icons
-   #+BEGIN_SRC emacs-lisp
-     (use-package all-the-icons
-       :ensure t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package all-the-icons
+    :ensure t)
+  (use-package all-the-icons-dired
+    :after all-the-icons
+    :config
+    (add-hook 'dired-mode-hook
+              (lambda ()
+                (all-the-icons-dired-mode))))
+#+END_SRC
 
 * Builtin Modes
 
 ** Winner Mode
-   #+BEGIN_SRC emacs-lisp
-     (winner-mode t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (winner-mode t)
+#+END_SRC
 
 ** EDiff Mode
-   #+BEGIN_SRC emacs-lisp
-     (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+#+END_SRC
 
 ** SQL Interactive Mode
-   #+BEGIN_SRC emacs-lisp
-     (add-hook 'sql-interactive-mode-hook
-               (lambda ()
-                 (sql-set-product 'postgres)
-                 (toggle-truncate-lines t)))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-hook 'sql-interactive-mode-hook
+            (lambda ()
+              (sql-set-product 'postgres)
+              (toggle-truncate-lines t)))
+#+END_SRC
 
 ** IDO
-   #+BEGIN_SRC emacs-lisp
-     (ido-mode t)
-     (setq ido-everywhere t)
-     (setq ido-enable-flex-matching t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (ido-mode t)
+  (setq ido-everywhere t)
+  (setq ido-enable-flex-matching t)
+#+END_SRC
 
 ** EShell
-   #+BEGIN_SRC emacs-lisp
-     ;; eshell tab-completion
-     (add-hook
-      'eshell-mode-hook
-      (lambda ()
-        (setq pcomplete-cycle-completions nil)))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  ;; eshell tab-completion
+  (add-hook
+   'eshell-mode-hook
+   (lambda ()
+     (setq pcomplete-cycle-completions nil)))
+#+END_SRC
 
 ** ELisp
-   #+BEGIN_SRC emacs-lisp
-     ;; eshell tab-completion
-     (add-hook
-      'eshell-mode-hook
-      (lambda ()
-        (setq pcomplete-cycle-completions nil)))
-     (add-hook 'emacs-lisp-mode-hook
-               (lambda ()
-                 ;; Use spaces, not tabs.
-                 (setq indent-tabs-mode nil)
-                 (company-mode)
-                 ;; Pretty-print eval'd expressions.
-                 (define-key emacs-lisp-mode-map
-                   "\C-x\C-e" 'pp-eval-last-sexp)
-                 ;; Recompile if .elc exists.
-                 (add-hook (make-local-variable 'after-save-hook)
-                           (lambda ()
-                             (byte-force-recompile default-directory)))
-                 (define-key emacs-lisp-mode-map
-                   "\r" 'reindent-then-newline-and-indent)))
-     (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-     (add-hook 'emacs-lisp-mode-hook 'sc-prog-mode)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  ;; eshell tab-completion
+  (add-hook
+   'eshell-mode-hook
+   (lambda ()
+     (setq pcomplete-cycle-completions nil)))
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda ()
+              ;; Use spaces, not tabs.
+              (setq indent-tabs-mode nil)
+              (company-mode)
+              ;; Pretty-print eval'd expressions.
+              (define-key emacs-lisp-mode-map
+                "\C-x\C-e" 'pp-eval-last-sexp)
+              ;; Recompile if .elc exists.
+              (add-hook (make-local-variable 'after-save-hook)
+                        (lambda ()
+                          (byte-force-recompile default-directory)))
+              (define-key emacs-lisp-mode-map
+                "\r" 'reindent-then-newline-and-indent)))
+  (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+  (add-hook 'emacs-lisp-mode-hook 'sc-prog-mode)
+#+END_SRC
 
 * Custom Modes
 ** SC Prog Mode
-   #+BEGIN_SRC emacs-lisp
-     (define-minor-mode sc-prog-mode
-       "General programming setup that all programming buffers should enable."
-       :init-value nil
-       (display-line-numbers-mode)
-       (which-key-mode)
-       (rainbow-mode)
-       (show-paren-mode)
-       (electric-pair-mode)
-       (fci-mode)
-       (hl-line-mode)
-       (whitespace-mode)
-       (company-mode))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (define-minor-mode sc-prog-mode
+    "General programming setup that all programming buffers should enable."
+    :init-value nil
+    (display-line-numbers-mode)
+    (which-key-mode)
+    (rainbow-mode)
+    (show-paren-mode)
+    (electric-pair-mode)
+    (fci-mode)
+    (hl-line-mode)
+    (whitespace-mode)
+    (company-mode))
+#+END_SRC
 
 * Packages
+** Org Mode
+#+begin_src emacs-lisp :tangle yes
+  (defun sc/org-mode-setup ()
+    (org-indent-mode)
+    (visual-line-mode 1))
 
+  (use-package org
+    :ensure t
+    :pin manual
+    :hook (org-mode . sc/org-mode-setup)
+    :config
+    (setq org-ellipsis " ▾"))
+#+end_src
+** Org Bullets
+[[https://github.com/sabof/org-bullets][org-bullets]] replaces the heading stars in org-mode buffers with nicer looking characters that you can control. Another option for this is org-superstar-mode which we may cover in a later video.
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-bullets
+    :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+end_src
 ** Package Config
-   #+BEGIN_SRC emacs-lisp
-     (require 'package)
-     (when (not package-archive-contents) (package-refresh-contents))
-     (setq use-package-always-defer t use-package-always-ensure t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (require 'package)
+  (when (not package-archive-contents) (package-refresh-contents))
+  (setq use-package-always-defer t use-package-always-ensure t)
+#+END_SRC
 
 ** Magit
-   #+BEGIN_SRC emacs-lisp
-     (use-package magit)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package magit)
+#+END_SRC
 ** AG
-   #+BEGIN_SRC emacs-lisp
-     (use-package ag :ensure t)
-     (use-package helm-ag)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ag :ensure t)
+  (use-package helm-ag)
+#+END_SRC
 
 ** Thrift
-   #+BEGIN_SRC emacs-lisp
-     (use-package thrift)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package thrift)
+#+END_SRC
 
 ** Avy
-   Emacs package for jumping to visible text using a char-based decision tree
-   [[https://github.com/abo-abo/avy][Github]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package avy)
-   #+END_SRC
+Emacs package for jumping to visible text using a char-based decision tree
+[[https://github.com/abo-abo/avy][Github]]
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package avy)
+#+END_SRC
 
 ** Define Word
-   Emacs package that lets you see the definition of a word or a phrase at point, without having to switch to a browser.
-   [[https://github.com/abo-abo/define-word][Github]]
-   #+BEGIN_SRC emacs-lisp
-     (use-package define-word)
-   #+END_SRC
+Emacs package that lets you see the definition of a word or a phrase at point, without having to switch to a browser.
+[[https://github.com/abo-abo/define-word][Github]]
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package define-word)
+#+END_SRC
 
 ** EShell Git Prompt
-   #+BEGIN_SRC emacs-lisp
-     (use-package eshell-git-prompt
-       :config
-       (eshell-git-prompt-use-theme 'powerline))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package eshell-git-prompt
+    :config
+    (eshell-git-prompt-use-theme 'powerline))
+#+END_SRC
 
 ** Expand Region
-   #+BEGIN_SRC emacs-lisp
-     (use-package expand-region)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package expand-region)
+#+END_SRC
    
 ** JS2 Mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package js2-mode
-       :hook (js2-mode . sc-prog-mode)
-       :config
-       (setq js2-mode-basic-offset 2)
-       (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package js2-mode
+    :hook (js2-mode . sc-prog-mode)
+    :config
+    (setq js2-mode-basic-offset 2)
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+#+END_SRC
 
 ** Markdown
-   #+BEGIN_SRC emacs-lisp
-     (use-package markdown-mode
-       :hook (markdown-mode . flyspell-mode)
-       :config
-       (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package markdown-mode
+    :hook (markdown-mode . flyspell-mode)
+    :config
+    (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+#+END_SRC
 
 ** Log4J Mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package log4j-mode :ensure t)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package log4j-mode :ensure t)
+#+END_SRC
 
 ** Popup iMenue
-   #+BEGIN_SRC emacs-lisp
-     (use-package popup-imenu)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package popup-imenu)
+#+END_SRC
 
 ** Projectile
-   #+BEGIN_SRC emacs-lisp
-     (use-package projectile
-       :demand t
-       :config
-       (projectile-global-mode t)
-       (defadvice projectile-project-root (around ignore-remote first activate)
-         (unless (file-remote-p default-directory) ad-do-it))
-       (projectile-mode +1)
-       (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package projectile
+    :demand t
+    :config
+    (projectile-global-mode t)
+    (defadvice projectile-project-root (around ignore-remote first activate)
+      (unless (file-remote-p default-directory) ad-do-it))
+    (projectile-mode +1)
+    (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))
+#+END_SRC
 
 ** Rainbow Mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package rainbow-mode)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package rainbow-mode)
+#+END_SRC
 
 ** Undo Tree
-   #+BEGIN_SRC emacs-lisp
-     (use-package undo-tree
-       :demand t
-       :config
-       (global-undo-tree-mode))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package undo-tree
+    :demand t
+    :config
+    (global-undo-tree-mode))
+#+END_SRC
 
 ** Web Mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package web-mode
-       :hook (web-mode . sc-prog-mode)
-       :config
-       (setq web-mode-markup-indent-offset 2)
-       (setq web-mode-code-indent-offset 2)
-       (setq web-mode-css-indent-offset 2)
-       (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-       (add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode)))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package web-mode
+    :hook (web-mode . sc-prog-mode)
+    :config
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode)))
+#+END_SRC
 
 ** Restclient
-   #+BEGIN_SRC emacs-lisp
-     (use-package company-restclient
-       :demand t
-       :config
-       (push 'company-restclient company-backends))
-     (use-package restclient
-       :hook (restclient-mode . company-mode)
-       :config
-       (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode)))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-restclient
+    :demand t
+    :config
+    (push 'company-restclient company-backends))
+  (use-package restclient
+    :hook (restclient-mode . company-mode)
+    :config
+    (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode)))
+#+END_SRC
 
 ** Which Key
-   #+BEGIN_SRC emacs-lisp
-     (use-package which-key)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package which-key)
+#+END_SRC
 
 ** Yasnippet
-   #+BEGIN_SRC emacs-lisp
-     (use-package yasnippet
-       :demand t
-       :config
-       (yas-global-mode t)
-       (setq yas-snippet-dirs '("~/emacs.git/snippets")))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package yasnippet
+    :demand t
+    :config
+    (yas-global-mode t))
+    ;(setq yas-snippet-dirs '("~/emacs.git/snippets")))
+  (use-package yasnippet-snippets
+    :demand t)
+#+END_SRC
 
 ** Flycheck
-   #+BEGIN_SRC emacs-lisp
-     (use-package flycheck
-       :init (global-flycheck-mode))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package flycheck
+    :init (global-flycheck-mode))
+#+END_SRC
 
 ** LSP Mode
-   #+BEGIN_SRC emacs-lisp
-     (use-package lsp-mode
-       :init (setq lsp-prefer-flymake nil)
-       :hook ((scala-mode . lsp)
-              (rust-mode . lsp))
-       :config (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local))
-                                             ; Add metals backend for lsp-mode
-     (use-package lsp-metals)
-     (use-package lsp-ui
-       :hook (lsp-mode . lsp-ui-mode))
-     (use-package company-lsp
-       :config
-       (push 'company-lsp company-backends))
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package lsp-mode
+    :init (setq lsp-prefer-flymake nil)
+    :hook ((scala-mode . lsp)
+           (rust-mode . lsp))
+    :config (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local))
+                                          ; Add metals backend for lsp-mode
+  (use-package lsp-metals)
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode))
+  (use-package company-lsp
+    :config
+    (push 'company-lsp company-backends))
+#+END_SRC
 
 ** Scala & SBT
-   #+BEGIN_SRC emacs-lisp
-     (use-package scala-mode
-       :mode "\\.s\\(cala\\|bt\\|c\\)$"
-       :hook ((scala-mode . sc-prog-mode)
-              (scala-mode . subword-mode)
-              (scala-mode . sc-scala-set-local-keys))
-       :config
-       (add-hook 'scala-mode-hook
-                 (lambda ()
-                   (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local)))
-       )
-     (use-package sbt-mode
-       :commands sbt-start sbt-command
-       :config
-       (set-variable 'sbt:program-name "/usr/bin/sbt"))
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package scala-mode
+    :mode "\\.s\\(cala\\|bt\\|c\\)$"
+    :hook ((scala-mode . sc-prog-mode)
+           (scala-mode . subword-mode)
+           (scala-mode . sc-scala-set-local-keys))
+    :config
+    (add-hook 'scala-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local)))
+    )
+  (use-package sbt-mode
+    :commands sbt-start sbt-command
+    :config
+    (set-variable 'sbt:program-name "/usr/bin/sbt"))
 
-     (defadvice newline-and-indent (after add-line-before-brace)
-       "Insert extra line if next character is closing curly brace or paren."
-       (if (looking-at "[})]")
-           (save-excursion
-             (newline)
-             (scala-indent:indent-line)))
-       (scala-indent:indent-line))
+  (defadvice newline-and-indent (after add-line-before-brace)
+    "Insert extra line if next character is closing curly brace or paren."
+    (if (looking-at "[})]")
+        (save-excursion
+          (newline)
+          (scala-indent:indent-line)))
+    (scala-indent:indent-line))
 
-     (defun sc-scala-wrap-case-class ()
-       "Break a case class declaration into one arg per line."
-       (interactive)
-       (while (looking-at "[^)]")
-         (if (looking-at "[(,]")
-             (progn
-               (forward-char 1)
-               (newline-and-indent))
-           (forward-char 1)))
-       (newline-and-indent))
+  (defun sc-scala-wrap-case-class ()
+    "Break a case class declaration into one arg per line."
+    (interactive)
+    (while (looking-at "[^)]")
+      (if (looking-at "[(,]")
+          (progn
+            (forward-char 1)
+            (newline-and-indent))
+        (forward-char 1)))
+    (newline-and-indent))
 
-     (defun sc-sbt-do-re-start ()
-       "Execute the sbt `reStart' command for the project."
-       (interactive)
-       (sbt:command "reStart"))
+  (defun sc-sbt-do-re-start ()
+    "Execute the sbt `reStart' command for the project."
+    (interactive)
+    (sbt:command "reStart"))
 
-     (defun sc-sbt-compile ()
-       "Execute the sbt `compile` command for the projcet."
-       (interactive)
-       (sbt:command "test:compile"))
+  (defun sc-sbt-compile ()
+    "Execute the sbt `compile` command for the projcet."
+    (interactive)
+    (sbt:command "test:compile"))
 
 
-     (defun sc-scala-file-name-no-suffix ()
-       "Return the file name without a suffix.  For example:
-     /foo/bar/Baz.scala would return Baz"
-       (file-name-sans-extension buffer-file-name))
+  (defun sc-scala-file-name-no-suffix ()
+    "Return the file name without a suffix.  For example:
+  /foo/bar/Baz.scala would return Baz"
+    (file-name-sans-extension buffer-file-name))
 
-     (defun sc-sbt-test-only-current-buffer ()
-       "Run sbt/testOnly on the current buffer.  Assumes sbt is already set to current project."
-       (interactive)
-       (let ((arg (concat "testOnly" " *" (file-name-sans-extension (file-name-nondirectory buffer-file-name)))))
-                                             ;(message (concat "sbt " arg))
-         (sbt:command arg)))
+  (defun sc-sbt-test-only-current-buffer ()
+    "Run sbt/testOnly on the current buffer.  Assumes sbt is already set to current project."
+    (interactive)
+    (let ((arg (concat "testOnly" " *" (file-name-sans-extension (file-name-nondirectory buffer-file-name)))))
+                                          ;(message (concat "sbt " arg))
+      (sbt:command arg)))
 
-     (defun sc-scala-set-local-keys ()
-       "Set local key bindings for custom functions."
-       (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
-       (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
-       (local-set-key (kbd "C-c C-b c") 'sc-sbt-compile)
-       (local-set-key (kbd "C-c C-b s") 'sbt-start)
-       (local-set-key (kbd "C-c C-b C-c") 'sc-sbt-compile)
-       (local-set-key (kbd "C-c C-b t") 'sc-sbt-test-only-current-buffer)
-       (local-set-key (kbd "C-c s w") 'sc-scala-wrap-case-class)
-       (local-set-key (kbd "C-c l r") 'lsp-find-references)
-       (local-set-key (kbd "C-c l f") 'lsp-format-buffer))
-   #+END_SRC
-** Volume Keybindings
-   #+BEGIN_SRC emacs-lisp
-     ;; (defun sc/exwm-volume-up ()
-     ;;   "Increase volume for system."
-     ;;   (interactive)
-     ;;   (call-process-shell-command "amixer -D pulse sset Master 3%+" nil 0))
-
-     ;; (defun sc/exwm-volume-down ()
-     ;;   "Decrease volume for system."
-     ;;   (interactive)
-     ;;   (call-process-shell-command "amixer -D pulse sset Master 3%-" nil 0))
-
-     ;; (defun sc/exwm-volume-mute ()
-     ;;   "Mute volume for system."
-     ;;   (interactive)
-     ;;   (call-process-shell-command "amixer -D pulse sset Master 0%" nil 0))
-
-     ;; (global-set-key (kbd "<XF86AudioRaiseVolume>") 'sc/exwm-volume-up)
-     ;; (global-set-key (kbd "<XF86AudioLowerVolume>") 'sc/exwm-volume-down)
-     ;; (global-set-key (kbd "<XF86AudioMute>") 'sc/exwm-volume-mute)
-   #+END_SRC
-
+  (defun sc-scala-set-local-keys ()
+    "Set local key bindings for custom functions."
+    (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
+    (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
+    (local-set-key (kbd "C-c C-b c") 'sc-sbt-compile)
+    (local-set-key (kbd "C-c C-b s") 'sbt-start)
+    (local-set-key (kbd "C-c C-b C-c") 'sc-sbt-compile)
+    (local-set-key (kbd "C-c C-b t") 'sc-sbt-test-only-current-buffer)
+    (local-set-key (kbd "C-c s w") 'sc-scala-wrap-case-class)
+    (local-set-key (kbd "C-c l r") 'lsp-find-references)
+    (local-set-key (kbd "C-c l f") 'lsp-format-buffer))
+#+END_SRC
 ** X-Window Auto-Layouts
-   Functions that auto-layout windows.
+Functions that auto-layout windows.
    
 *** Launcing browser windows
-    #+BEGIN_SRC emacs-lisp
-      (defun sc/launch-google-chrome (profile &optional url new-window app-mode)
-        "Launches a browser window for profile PROFILE. If NEW-WINDOW is set, then a new window is launched."
-        (start-process-shell-command "google-chrome" nil (concat "google-chrome " (if app-mode "--app=" "") url " --profile-directory=" profile)))
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun sc/launch-google-chrome (profile &optional url new-window app-mode)
+    "Launches a browser window for profile PROFILE. If NEW-WINDOW is set, then a new window is launched."
+    (start-process-shell-command "google-chrome" nil (concat "google-chrome " (if app-mode "--app=" "") url " --profile-directory=" profile)))
 
-      (defun sc/launch-google-chrome-mc (&optional url new-window app-mode)
-        "Launches a browser window for Mark Capital profile. If NEW-WINDOW is set, then a new window is launched."
-        (interactive)
-        (sc/launch-google-chrome "Profile\\ 1" url new-window app-mode))
+  (defun sc/launch-google-chrome-mc (&optional url new-window app-mode)
+    "Launches a browser window for Mark Capital profile. If NEW-WINDOW is set, then a new window is launched."
+    (interactive)
+    (sc/launch-google-chrome "Profile\\ 1" url new-window app-mode))
 
-      (defun sc/launch-google-chrome-ss (&optional url new-window app-mode)
-        "Launches a browser window for Schaake Solutions profile. If NEW-WINDOW is set, then a new window is launched."
-        (interactive)
-        (sc/launch-google-chrome "Profile\\ 2" url new-window app-mode))
+  (defun sc/launch-google-chrome-ss (&optional url new-window app-mode)
+    "Launches a browser window for Schaake Solutions profile. If NEW-WINDOW is set, then a new window is launched."
+    (interactive)
+    (sc/launch-google-chrome "Profile\\ 2" url new-window app-mode))
 
-      (defun sc/launch-google-chrome-personal (&optional url new-window app-mode)
-        "Launches a browser window for personal profile. If NEW-WINDOW is set, then a new window is launched."
-        (interactive)
-        (sc/launch-google-chrome "Default" url new-window app-mode))
+  (defun sc/launch-google-chrome-personal (&optional url new-window app-mode)
+    "Launches a browser window for personal profile. If NEW-WINDOW is set, then a new window is launched."
+    (interactive)
+    (sc/launch-google-chrome "Default" url new-window app-mode))
 
-      (global-set-key (kbd "C-c g p") 'sc/launch-google-chrome-personal)
-      (global-set-key (kbd "C-c g m") 'sc/launch-google-chrome-mc)
-      (global-set-key (kbd "C-c g s") 'sc/launch-google-chrome-ss)
-    #+END_SRC
+  (global-set-key (kbd "C-c g p") 'sc/launch-google-chrome-personal)
+  (global-set-key (kbd "C-c g m") 'sc/launch-google-chrome-mc)
+  (global-set-key (kbd "C-c g s") 'sc/launch-google-chrome-ss)
+#+END_SRC
 
 * Schaake Solutions
 
 ** FLEX
-   #+BEGIN_SRC emacs-lisp
-     (defvar sc/flex--root-dir "/home/markschaake/projects/flex/")
-     (defvar sc/flex--tail-file (concat sc/flex--root-dir "prod.log"))
-     (defvar sc/flex--scripts-dir (concat sc/flex--root-dir "scripts/"))
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defvar sc/flex--root-dir "/home/markschaake/projects/flex/")
+  (defvar sc/flex--tail-file (concat sc/flex--root-dir "prod.log"))
+  (defvar sc/flex--scripts-dir (concat sc/flex--root-dir "scripts/"))
 
-     (defun sc/flex-tail-prod ()
-       "Tail the prod journalctl log."
-       (interactive)
-       ;; spawn a process that tails the journal and appends to the log file
-       (progn
-         (set-process-sentinel
-          (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" (concat sc/flex--scripts-dir "flex-tail-to-file.sh") sc/flex--tail-file)
-          '(lambda (proc evt)
-             (progn
-               (message (concat "Got event: " evt))
-               (when (not (= 0 (process-exit-status proc)))
-                 (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" "echo" "[ERROR] CONNECTION LOST" ">>" sc/flex--tail-file)))
-             ))
-         (find-file-read-only sc/flex--tail-file)
-                                             ;(auto-revert-mode)
-         (text-scale-set -2)
-         (goto-char (point-max))
-         (log4j-start-filter "WARN ERROR warn error" "")
-         (windmove-down)
-         (text-scale-set -2)
-         (goto-char (point-max))))
-   #+END_SRC
+  (defun sc/flex-tail-prod ()
+    "Tail the prod journalctl log."
+    (interactive)
+    ;; spawn a process that tails the journal and appends to the log file
+    (progn
+      (set-process-sentinel
+       (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" (concat sc/flex--scripts-dir "flex-tail-to-file.sh") sc/flex--tail-file)
+       '(lambda (proc evt)
+          (progn
+            (message (concat "Got event: " evt))
+            (when (not (= 0 (process-exit-status proc)))
+              (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" "echo" "[ERROR] CONNECTION LOST" ">>" sc/flex--tail-file)))
+          ))
+      (find-file-read-only sc/flex--tail-file)
+                                          ;(auto-revert-mode)
+      (text-scale-set -2)
+      (goto-char (point-max))
+      (log4j-start-filter "WARN ERROR warn error" "")
+      (windmove-down)
+      (text-scale-set -2)
+      (goto-char (point-max))))
+#+END_SRC
 ** Project Window Layouts
-   #+BEGIN_SRC emacs-lisp
-     (defun sc/windows--mk-sbt-project (root-dir)
-       "Make windows in the current frame for project in ROOT-DIR ready for SBT development."
-       (interactive)
-       (let ((build-file (concat root-dir "build.sbt")))
-         (progn
-           (find-file root-dir)
-           (sbt-start)
-           (set-buffer (sbt:buffer-name))
-           (text-scale-set -1)
-           (split-window-below -12)
-           (find-file build-file)
-           (magit-status)
-           (let ((mbuf (buffer-name)))
-             (progn
-               (delete-window)
-               (split-window-right)
-               (windmove-right)
-               (message (concat "Magit buffer: " mbuf))
-               (switch-to-buffer mbuf)
-               (windmove-down))))))
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun sc/windows--mk-sbt-project (root-dir)
+    "Make windows in the current frame for project in ROOT-DIR ready for SBT development."
+    (interactive)
+    (let ((build-file (concat root-dir "build.sbt")))
+      (progn
+        (find-file root-dir)
+        (sbt-start)
+        (set-buffer (sbt:buffer-name))
+        (text-scale-set -1)
+        (split-window-below -12)
+        (find-file build-file)
+        (magit-status)
+        (let ((mbuf (buffer-name)))
+          (progn
+            (delete-window)
+            (split-window-right)
+            (windmove-right)
+            (message (concat "Magit buffer: " mbuf))
+            (switch-to-buffer mbuf)
+            (windmove-down))))))
 
-     (defun sc/windows-mk-toolkit ()
-       "Make frame ready for ss-toolkit development."
-       (interactive)
-       (progn
-         (sc/windows--mk-sbt-project "/home/markschaake/projects/ss-toolkit/")
-         (sbt-command "project schaake-test-server")))
+  (defun sc/windows-mk-toolkit ()
+    "Make frame ready for ss-toolkit development."
+    (interactive)
+    (progn
+      (sc/windows--mk-sbt-project "/home/markschaake/projects/ss-toolkit/")
+      (sbt-command "project schaake-test-server")))
 
-     (defun sc/windows-mk-flex ()
-       "Make frame ready for FLEX development."
-       (interactive)
-       (progn
-         (sc/windows--mk-sbt-project "/home/markschaake/projects/flex/")
-         (sbt-command "project flex-server")))
+  (defun sc/windows-mk-flex ()
+    "Make frame ready for FLEX development."
+    (interactive)
+    (progn
+      (sc/windows--mk-sbt-project "/home/markschaake/projects/flex/")
+      (sbt-command "project flex-server")))
 
-     (defun sc/windows-mk-sbt-plugins ()
-       "Make frame ready for sc/sbt-plugins development."
-       (interactive)
-       (progn
-         (sc/windows--mk-sbt-project "/home/markschaake/projects/sc-sbt-plugins/")
-         ))
+  (defun sc/windows-mk-sbt-plugins ()
+    "Make frame ready for sc/sbt-plugins development."
+    (interactive)
+    (progn
+      (sc/windows--mk-sbt-project "/home/markschaake/projects/sc-sbt-plugins/")
+      ))
 
-     (defun sc/windows-mk-servicepro ()
-       "Make frame ready for servicepro.management development."
-       (interactive)
-       (progn
-         (sc/windows--mk-sbt-project "/home/markschaake/projects/servicepro/")
-         ))
+  (defun sc/windows-mk-servicepro ()
+    "Make frame ready for servicepro.management development."
+    (interactive)
+    (progn
+      (sc/windows--mk-sbt-project "/home/markschaake/projects/servicepro/")
+      ))
 
-     (defun sc/windows-mk-homeschool ()
-       "Make frame ready for Schaake Homeschool development."
-       (interactive)
-       (progn
-         (sc/windows--mk-sbt-project "/home/markschaake/projects/schaake-homeschool/")
-         (sbt-command "project server")))
+  (defun sc/windows-mk-homeschool ()
+    "Make frame ready for Schaake Homeschool development."
+    (interactive)
+    (progn
+      (sc/windows--mk-sbt-project "/home/markschaake/projects/schaake-homeschool/")
+      (sbt-command "project server")))
 
-     (defun sc/windows-mk-dashboard ()
-       "Make frames with workday dashboard."
-       (interactive)
-       (let ((plan-file "/home/markschaake/Dropbox/org/gtd/dailyplan.org"))
-         (progn
-           (find-file plan-file)
-           (split-window-right)
-           (windmove-right)
-           (sc/flex-tail-prod)
-           (windmove-left)
-           (split-window-below -15)
-           (mu4e)
-           (shell-command "/home/markschaake/bin/restart-offlineimap.sh"))))
+  (defun sc/windows-mk-dashboard ()
+    "Make frames with workday dashboard."
+    (interactive)
+    (let ((plan-file "/home/markschaake/Dropbox/org/gtd/dailyplan.org"))
+      (progn
+        (find-file plan-file)
+        (split-window-right)
+        (windmove-right)
+        (sc/flex-tail-prod)
+        (windmove-left)
+        (split-window-below -15)
+        (mu4e)
+        (shell-command "/home/markschaake/bin/restart-offlineimap.sh"))))
 
-     (defun sc/windows-mk-mc ()
-       "Make frames with Mark Capital browser windows."
-       (interactive)
-       (let ((profile-dir "Profile\\ 1"))
-         (progn
-           (sc/launch-google-chrome-mc "https://chat.google.com" t t)
-           (split-window-right 100)
-           (windmove-right)
-           (sc/launch-google-chrome-mc "https://www.flex.finance" t))))
+  (defun sc/windows-mk-mc ()
+    "Make frames with Mark Capital browser windows."
+    (interactive)
+    (let ((profile-dir "Profile\\ 1"))
+      (progn
+        (sc/launch-google-chrome-mc "https://chat.google.com" t t)
+        (split-window-right 100)
+        (windmove-right)
+        (sc/launch-google-chrome-mc "https://www.flex.finance" t))))
 
-     (global-set-key (kbd "C-c w d") 'sc/windows-mk-dashboard)
-     (global-set-key (kbd "C-c w s") 'sc/windows-mk-toolkit)
-     (global-set-key (kbd "C-c w f") 'sc/windows-mk-flex)
-     (global-set-key (kbd "C-c w p") 'sc/windows-mk-sbt-plugins)
-     (global-set-key (kbd "C-c w h") 'sc/windows-mk-homeschool)
-     (global-set-key (kbd "C-c w m") 'sc/windows-mk-servicepro)
-  #+END_SRC
+  (global-set-key (kbd "C-c w d") 'sc/windows-mk-dashboard)
+  (global-set-key (kbd "C-c w s") 'sc/windows-mk-toolkit)
+  (global-set-key (kbd "C-c w f") 'sc/windows-mk-flex)
+  (global-set-key (kbd "C-c w p") 'sc/windows-mk-sbt-plugins)
+  (global-set-key (kbd "C-c w h") 'sc/windows-mk-homeschool)
+  (global-set-key (kbd "C-c w m") 'sc/windows-mk-servicepro)
+#+END_SRC
 * Window Management
 
 ** EXWM Configuration
-   #+BEGIN_SRC emacs-lisp
-     (defun sc/setup-desktop-monitors ()
-       "Ensures monitors are laid out correctly."
-       (interactive)
-       (shell-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off"))
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun sc/setup-desktop-monitors ()
+    "Ensures monitors are laid out correctly."
+    (interactive)
+    (shell-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off"))
 
-     (require 'exwm)
-     (add-hook 'exwm-update-class-hook
-               (lambda ()
-                 (exwm-workspace-rename-buffer exwm-class-name)))
-     ;; RANDR
-     (require 'exwm-randr)
-     (setq exwm-randr-workspace-output-plist '(1 "DP-0" 0 "DP-2"))
-     (add-hook 'exwm-randr-screen-change-hook
-               (lambda ()
-                 (start-process-shell-command "xrandr" nil "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off")))
-     (exwm-randr-enable)
+  (require 'exwm)
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (exwm-workspace-rename-buffer exwm-class-name)))
 
-     ;; System tray
-     (require 'exwm-systemtray)
-     (setq exwm-systemtray-height 32)
-     (exwm-systemtray-enable)
+  (unless (get 'exwm-workspace-number 'saved-value)
+    (setq exwm-workspace-number 4))
 
-     ;; Global keybindings.
-     (unless (get 'exwm-input-global-keys 'saved-value)
-       (setq exwm-input-global-keys
-             `(
-               ;; 's-r': Reset (to line-mode).
-               ([?\s-r] . exwm-reset)
-               ;; 's-m': fixup dual monitors
-               ([?\s-m] . sc/setup-desktop-monitors)
-               ;; 's-w': Switch workspace.
-               ([?\s-w] . exwm-workspace-switch)
-               ;; 's-&': Launch application.
-               ([?\s-&] . (lambda (command)
-                            (interactive (list (read-shell-command "$ ")))
-                            (start-process-shell-command command nil command)))
-               ;; 's-N': Switch to certain workspace.
-               ,@(mapcar (lambda (i)
-                           `(,(kbd (format "s-%d" i)) .
-                             (lambda ()
-                               (interactive)
-                               (exwm-workspace-switch-create ,i))))
-                         (number-sequence 0 9)))))
-     ;; Line-editing shortcuts
-     (unless (get 'exwm-input-simulation-keys 'saved-value)
-       (setq exwm-input-simulation-keys
-             '(([?\C-b] . [left])
-               ([?\C-f] . [right])
-               ([?\C-p] . [up])
-               ([?\C-n] . [down])
-               ([?\C-a] . [home])
-               ([?\C-e] . [end])
-               ([?\M-v] . [prior])
-               ([?\C-v] . [next])
-               ([?\C-d] . [delete])
-               ([?\C-k] . [S-end delete]))))
-     (exwm-enable)
-     (require 'exwm-config)
-     (exwm-config-ido)
-     ;; Other configurations
-     (exwm-config-misc)
-   #+END_SRC
+  ;; RANDR
+  (require 'exwm-randr)
+  (setq exwm-randr-workspace-output-plist '(1 "DP-0" 0 "DP-2"))
+  (add-hook 'exwm-randr-screen-change-hook
+            (lambda ()
+              (start-process-shell-command "xrandr" nil "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off")))
+  (exwm-randr-enable)
+
+  ;; System tray
+  (require 'exwm-systemtray)
+  (setq exwm-systemtray-height 32)
+  (exwm-systemtray-enable)
+
+  ;; Global keybindings.
+  (unless (get 'exwm-input-global-keys 'saved-value)
+    (setq exwm-input-global-keys
+          `(
+            ;; 's-r': Reset (to line-mode).
+            ([?\s-r] . exwm-reset)
+            ;; 's-m': fixup dual monitors
+            ([?\s-m] . sc/setup-desktop-monitors)
+            ;; 's-w': Switch workspace.
+            ([?\s-w] . exwm-workspace-switch)
+            ;; 's-&': Launch application.
+            ([?\s-&] . (lambda (command)
+                         (interactive (list (read-shell-command "$ ")))
+                         (start-process-shell-command command nil command)))
+            ;; 's-N': Switch to certain workspace.
+            ,@(mapcar (lambda (i)
+                        `(,(kbd (format "s-%d" i)) .
+                          (lambda ()
+                            (interactive)
+                            (exwm-workspace-switch-create ,i))))
+                      (number-sequence 0 9)))))
+  ;; Line-editing shortcuts
+  (unless (get 'exwm-input-simulation-keys 'saved-value)
+    (setq exwm-input-simulation-keys
+          '(([?\C-b] . [left])
+            ([?\C-f] . [right])
+            ([?\C-p] . [up])
+            ([?\C-n] . [down])
+            ([?\C-a] . [home])
+            ([?\C-e] . [end])
+            ([?\M-v] . [prior])
+            ([?\C-v] . [next])
+            ([?\C-d] . [delete])
+            ([?\C-k] . [S-end delete]))))
+  (exwm-enable)
+  (require 'exwm-config)
+  (exwm-config-ido)
+  ;; Other configurations
+  (exwm-config-misc)
+#+END_SRC
 
 ** Desktop Environment
-   #+BEGIN_SRC emacs-lisp
-     (require 'desktop-environment)
-     (desktop-environment-mode)
-   #+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (require 'desktop-environment)
+  (desktop-environment-mode)
+#+END_SRC

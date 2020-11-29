@@ -14,7 +14,6 @@
  '(css-indent-offset 2)
  '(custom-safe-themes
    '("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "3d6b08cd1b1def3cc0bc6a3909f67475e5612dba9fa98f8b842433d827af5d30" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))
- '(fci-rule-color "#383838")
  '(fci-rule-column 120)
  '(fci-rule-width 2)
  '(inhibit-startup-screen t)
@@ -71,7 +70,7 @@
      ("melpa-stable" . "http://stable.melpa.org/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(all-the-icons lsp-metals ag log4j-mode htmlize auto-package-update ox-reveal forge csv-mode docker cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
+   '(dired org all-the-icons-dired org-bullets yasnippet-snippets desktop-environment all-the-icons lsp-metals ag log4j-mode htmlize auto-package-update ox-reveal forge csv-mode docker cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
  '(pyvenv-workon "python-TihE9rGM")
  '(restclient-inhibit-cookies t)
  '(sbt:program-name "/usr/bin/sbt")
@@ -89,7 +88,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#3F3F3F" :foreground "#DCDCCC" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 80 :width normal :foundry "nil" :family "Menlo"))))
- '(hl-line ((t (:background "gray36")))))
+ )
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
