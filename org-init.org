@@ -631,6 +631,8 @@ Functions that auto-layout windows.
   (require 'exwm-systemtray)
   (setq exwm-systemtray-height 32)
   (exwm-systemtray-enable)
+  ;; Start network manager applet so we can monitor network in system tray
+  (start-process-shell-command "nm-applet" nil "nm-applet")
 
   ;; Global keybindings.
   (unless (get 'exwm-input-global-keys 'saved-value)
