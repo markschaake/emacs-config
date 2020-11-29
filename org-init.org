@@ -606,73 +606,85 @@ Functions that auto-layout windows.
 
 ** EXWM Configuration
 #+BEGIN_SRC emacs-lisp :tangle yes
+  (defvar sc/exwm-xrandr-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off")
   (defun sc/setup-desktop-monitors ()
     "Ensures monitors are laid out correctly."
     (interactive)
-    (shell-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off"))
+    (shell-command sc/exwm-xrandr-command))
 
-  (require 'exwm)
-  (add-hook 'exwm-update-class-hook
-            (lambda ()
-              (exwm-workspace-rename-buffer exwm-class-name)))
+  (defun sc/exwm-init ()
+      "Initialize EXWM."
+    (interactive)
+    (use-package exwm
+      :demand t
+      :config
+      (message "Configuring EXWM")
+      (add-hook 'exwm-update-class-hook
+                (lambda ()
+                  (exwm-workspace-rename-buffer exwm-class-name)))
 
-  (unless (get 'exwm-workspace-number 'saved-value)
-    (setq exwm-workspace-number 4))
+      (unless (get 'exwm-workspace-number 'saved-value)
+        (setq exwm-workspace-number 4))
 
-  ;; RANDR
-  (require 'exwm-randr)
-  (setq exwm-randr-workspace-output-plist '(1 "DP-0" 0 "DP-2"))
-  (add-hook 'exwm-randr-screen-change-hook
-            (lambda ()
-              (start-process-shell-command "xrandr" nil "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off")))
-  (exwm-randr-enable)
+      ;; Global keybindings.
+      (unless (get 'exwm-input-global-keys 'saved-value)
+        (setq exwm-input-global-keys
+              `(
+                ;; 's-r': Reset (to line-mode).
+                ([?\s-r] . exwm-reset)
+                ;; 's-m': fixup dual monitors
+                ([?\s-m] . sc/setup-desktop-monitors)
+                ;; 's-w': Switch workspace.
+                ([?\s-w] . exwm-workspace-switch)
+                ;; 's-&': Launch application.
+                ([?\s-&] . (lambda (command)
+                             (interactive (list (read-shell-command "$ ")))
+                             (start-process-shell-command command nil command)))
+                ;; 's-N': Switch to certain workspace.
+                ,@(mapcar (lambda (i)
+                            `(,(kbd (format "s-%d" i)) .
+                              (lambda ()
+                                (interactive)
+                                (exwm-workspace-switch-create ,i))))
+                          (number-sequence 0 9)))))
+      ;; Line-editing shortcuts
+      (unless (get 'exwm-input-simulation-keys 'saved-value)
+        (setq exwm-input-simulation-keys
+              '(([?\C-b] . [left])
+                ([?\C-f] . [right])
+                ([?\C-p] . [up])
+                ([?\C-n] . [down])
+                ([?\C-a] . [home])
+                ([?\C-e] . [end])
+                ([?\M-v] . [prior])
+                ([?\C-v] . [next])
+                ([?\C-d] . [delete])
+                ([?\C-k] . [S-end delete]))))
+      ;; RANDR
+      (require 'exwm-randr)
+      (setq exwm-randr-workspace-output-plist '(1 "DP-0" 0 "DP-2"))
+      (add-hook 'exwm-randr-screen-change-hook
+                (lambda ()
+                  (start-process-shell-command "xrandr" nil sc/exwm-xrandr-command)))
+      (exwm-randr-enable)
 
-  ;; System tray
-  (require 'exwm-systemtray)
-  (setq exwm-systemtray-height 32)
-  (exwm-systemtray-enable)
-  ;; Start network manager applet so we can monitor network in system tray
-  (start-process-shell-command "nm-applet" nil "nm-applet")
+      ;; System tray
+      (require 'exwm-systemtray)
+      (setq exwm-systemtray-height 24)
+      (exwm-systemtray-enable)
+      ;; Start network manager applet so we can monitor network in system tray
+      (add-hook 'exwm-init-hook (lambda () (start-process-shell-command "nm-applet" nil "nm-applet")))
 
-  ;; Global keybindings.
-  (unless (get 'exwm-input-global-keys 'saved-value)
-    (setq exwm-input-global-keys
-          `(
-            ;; 's-r': Reset (to line-mode).
-            ([?\s-r] . exwm-reset)
-            ;; 's-m': fixup dual monitors
-            ([?\s-m] . sc/setup-desktop-monitors)
-            ;; 's-w': Switch workspace.
-            ([?\s-w] . exwm-workspace-switch)
-            ;; 's-&': Launch application.
-            ([?\s-&] . (lambda (command)
-                         (interactive (list (read-shell-command "$ ")))
-                         (start-process-shell-command command nil command)))
-            ;; 's-N': Switch to certain workspace.
-            ,@(mapcar (lambda (i)
-                        `(,(kbd (format "s-%d" i)) .
-                          (lambda ()
-                            (interactive)
-                            (exwm-workspace-switch-create ,i))))
-                      (number-sequence 0 9)))))
-  ;; Line-editing shortcuts
-  (unless (get 'exwm-input-simulation-keys 'saved-value)
-    (setq exwm-input-simulation-keys
-          '(([?\C-b] . [left])
-            ([?\C-f] . [right])
-            ([?\C-p] . [up])
-            ([?\C-n] . [down])
-            ([?\C-a] . [home])
-            ([?\C-e] . [end])
-            ([?\M-v] . [prior])
-            ([?\C-v] . [next])
-            ([?\C-d] . [delete])
-            ([?\C-k] . [S-end delete]))))
-  (exwm-enable)
-  (require 'exwm-config)
-  (exwm-config-ido)
-  ;; Other configurations
-  (exwm-config-misc)
+      ;; Other configurations
+      (require 'exwm-config)
+      (exwm-config-ido)
+      (exwm-config-misc)
+
+      (exwm-enable)))
+
+  ;; Have not been able to get EXWM to conditionally start depending on environment, so for now if we don't
+  ;; want it to start, just comment out the next line:
+  (sc/exwm-init)
 #+END_SRC
 
 ** Desktop Environment
