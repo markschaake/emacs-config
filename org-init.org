@@ -9,14 +9,18 @@ Emacs config using org-mode babel
 
 ** Global Font
 #+BEGIN_SRC emacs-lisp :tangle yes
+(defun sc/font-set-defaults ()
   (add-to-list 'default-frame-alist '(font . "FiraCode"))
-  (set-face-attribute 'default nil :height 80)
+  (set-face-attribute 'default nil :height 80))
+(sc/font-set-defaults)
 #+END_SRC
+
+#+RESULTS:
 
 ** PATH
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-  (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin" ":/home/markschaake/.local/share/coursier/bin"))
+  (setq exec-path (append exec-path '("/usr/local/bin" "/home/markschaake/.local/share/coursier/bin")))
 #+END_SRC
 
 ** Tabs and Whitespace
@@ -197,6 +201,12 @@ Revert buffers when changed externally (like git checkout)
 #+END_SRC
 
 * Packages
+** Package Config
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (require 'package)
+  (when (not package-archive-contents) (package-refresh-contents))
+  (setq use-package-always-defer t use-package-always-ensure t)
+#+END_SRC
 ** Org Mode
 #+begin_src emacs-lisp :tangle yes
   (defun sc/org-mode-setup ()
@@ -210,7 +220,7 @@ Revert buffers when changed externally (like git checkout)
     :config
     (setq org-ellipsis " ▾"))
 #+end_src
-** Org Bullets
+*** Org Bullets
 [[https://github.com/sabof/org-bullets][org-bullets]] replaces the heading stars in org-mode buffers with nicer looking characters that you can control. Another option for this is org-superstar-mode which we may cover in a later video.
 #+begin_src emacs-lisp :tangle yes
   (use-package org-bullets
@@ -219,12 +229,23 @@ Revert buffers when changed externally (like git checkout)
     :custom
     (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
-** Package Config
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (require 'package)
-  (when (not package-archive-contents) (package-refresh-contents))
-  (setq use-package-always-defer t use-package-always-ensure t)
-#+END_SRC
+*** Plant UML support
+#+begin_src emacs-lisp :tangle yes
+  ;; active Org-babel languages
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(;; other Babel languages
+     (plantuml . t)))
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/opt/plantuml.jar"))
+#+end_src
+
+** AMX - super M-x
+[[https://github.com/DarwinAwardWinner/amx][amx-mode]] when called, replaces the default M-x with amx
+#+begin_src emacs-lisp :tangle yes
+  (use-package amx)
+  
+#+end_src
 
 ** Magit
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -371,16 +392,19 @@ Emacs package that lets you see the definition of a word or a phrase at point, w
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lsp-mode
     :init (setq lsp-prefer-flymake nil)
-    :hook ((scala-mode . lsp)
-           (rust-mode . lsp))
-    :config (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local))
+    :hook (scala-mode . lsp)
+           (lsp-mode . lsp-lens-mode)
+    :config
+          (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local)
+          (setq lsp-prefer-flymake nil))
                                           ; Add metals backend for lsp-mode
   (use-package lsp-metals)
-  (use-package lsp-ui
-    :hook (lsp-mode . lsp-ui-mode))
-  (use-package company-lsp
+  (use-package lsp-ui)
+
+  (use-package company
+    :hook (scala-mode . company-mode)
     :config
-    (push 'company-lsp company-backends))
+    (setq lsp-completion-provider :capf))
 #+END_SRC
 
 ** Scala & SBT
@@ -466,7 +490,7 @@ Functions that auto-layout windows.
   (defun sc/launch-google-chrome-mc (&optional url new-window app-mode)
     "Launches a browser window for Mark Capital profile. If NEW-WINDOW is set, then a new window is launched."
     (interactive)
-    (sc/launch-google-chrome "Profile\\ 1" url new-window app-mode))
+    (sc/launch-google-chrome "Default" url new-window app-mode))
 
   (defun sc/launch-google-chrome-ss (&optional url new-window app-mode)
     "Launches a browser window for Schaake Solutions profile. If NEW-WINDOW is set, then a new window is launched."
@@ -476,34 +500,41 @@ Functions that auto-layout windows.
   (defun sc/launch-google-chrome-personal (&optional url new-window app-mode)
     "Launches a browser window for personal profile. If NEW-WINDOW is set, then a new window is launched."
     (interactive)
-    (sc/launch-google-chrome "Default" url new-window app-mode))
+    (sc/launch-google-chrome "Profile\\ 1" url new-window app-mode))
 
   (global-set-key (kbd "C-c g p") 'sc/launch-google-chrome-personal)
   (global-set-key (kbd "C-c g m") 'sc/launch-google-chrome-mc)
   (global-set-key (kbd "C-c g s") 'sc/launch-google-chrome-ss)
 #+END_SRC
 
+#+RESULTS:
+: sc/launch-google-chrome-ss
+
 * Schaake Solutions
 
 ** FLEX
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defvar sc/flex--root-dir "/home/markschaake/projects/flex/")
-  (defvar sc/flex--tail-file (concat sc/flex--root-dir "prod.log"))
+  (defvar sc/flex--tail-file "/var/log/flex/prod.log")
   (defvar sc/flex--scripts-dir (concat sc/flex--root-dir "scripts/"))
+
+  (defun sc/flex-tail-prod-to-log-file ()
+    "Kick off process to tail prod to local log file."
+    (interactive)
+    (set-process-sentinel
+       (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" (concat sc/flex--scripts-dir "flex-tail-to-file.sh") sc/flex--tail-file)
+       '(lambda (proc evt)
+          (progn
+            (message (concat "Got event: " evt))
+            (when (not (= 0 (process-exit-status proc)))
+              (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" "echo" "[ERROR] CONNECTION LOST" ">>" sc/flex--tail-file))))))
 
   (defun sc/flex-tail-prod ()
     "Tail the prod journalctl log."
     (interactive)
     ;; spawn a process that tails the journal and appends to the log file
     (progn
-      (set-process-sentinel
-       (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" (concat sc/flex--scripts-dir "flex-tail-to-file.sh") sc/flex--tail-file)
-       '(lambda (proc evt)
-          (progn
-            (message (concat "Got event: " evt))
-            (when (not (= 0 (process-exit-status proc)))
-              (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" "echo" "[ERROR] CONNECTION LOST" ">>" sc/flex--tail-file)))
-          ))
+      (sc/flex-tail-prod-to-log-file)
       (find-file-read-only sc/flex--tail-file)
                                           ;(auto-revert-mode)
       (text-scale-set -2)
@@ -588,7 +619,7 @@ Functions that auto-layout windows.
   (defun sc/windows-mk-mc ()
     "Make frames with Mark Capital browser windows."
     (interactive)
-    (let ((profile-dir "Profile\\ 1"))
+    (let ((profile-dir "Default"))
       (progn
         (sc/launch-google-chrome-mc "https://chat.google.com" t t)
         (split-window-right 100)
@@ -600,13 +631,13 @@ Functions that auto-layout windows.
   (global-set-key (kbd "C-c w f") 'sc/windows-mk-flex)
   (global-set-key (kbd "C-c w p") 'sc/windows-mk-sbt-plugins)
   (global-set-key (kbd "C-c w h") 'sc/windows-mk-homeschool)
-  (global-set-key (kbd "C-c w m") 'sc/windows-mk-servicepro)
+  (global-set-key (kbd "C-c w m") 'sc/windows-mk-mc)
 #+END_SRC
 * Window Management
 
 ** EXWM Configuration
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (defvar sc/exwm-xrandr-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-1 --off --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal --output DP-3 --off --output DP-4 --off --output DP-5 --off")
+  (defvar sc/exwm-xrandr-command "xrandr --output DP-0 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP-2 --primary --mode 2560x1440 --pos 0x0 --rotate normal")
   (defun sc/setup-desktop-monitors ()
     "Ensures monitors are laid out correctly."
     (interactive)
@@ -670,7 +701,7 @@ Functions that auto-layout windows.
 
       ;; System tray
       (require 'exwm-systemtray)
-      (setq exwm-systemtray-height 24)
+      (setq exwm-systemtray-height 36)
       (exwm-systemtray-enable)
       ;; Start network manager applet so we can monitor network in system tray
       (add-hook 'exwm-init-hook (lambda () (start-process-shell-command "nm-applet" nil "nm-applet")))
@@ -687,8 +718,20 @@ Functions that auto-layout windows.
   (sc/exwm-init)
 #+END_SRC
 
+#+RESULTS:
+: t
+
 ** Desktop Environment
 #+BEGIN_SRC emacs-lisp :tangle yes
   (require 'desktop-environment)
   (desktop-environment-mode)
+#+END_SRC
+** Cron
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package with-editor)
+  (use-package crontab-mode)
+  (defun sc/crontab-e ()
+    "Edit crontab in emacs."
+    (interactive)
+    (with-editor-async-shell-command "crontab -e"))
 #+END_SRC

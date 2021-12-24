@@ -14,6 +14,7 @@
  '(css-indent-offset 2)
  '(custom-safe-themes
    '("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "3d6b08cd1b1def3cc0bc6a3909f67475e5612dba9fa98f8b842433d827af5d30" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default))
+ '(elfeed-feeds '("https://reddit.com/r/emacs/.rss"))
  '(fci-rule-column 120)
  '(fci-rule-width 2)
  '(inhibit-startup-screen t)
@@ -70,7 +71,7 @@
      ("melpa-stable" . "http://stable.melpa.org/packages/")
      ("gnu" . "https://elpa.gnu.org/packages/")))
  '(package-selected-packages
-   '(dired org all-the-icons-dired org-bullets yasnippet-snippets desktop-environment all-the-icons lsp-metals ag log4j-mode htmlize auto-package-update ox-reveal forge csv-mode docker cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
+   '(crontab-mode amx dired org all-the-icons-dired org-bullets yasnippet-snippets desktop-environment all-the-icons lsp-metals ag log4j-mode htmlize auto-package-update ox-reveal forge csv-mode docker cargo slime flymake-yaml yaml-mode company-restclient restclient-mode avy flyspell use-pakckage yasnippet sbt-mode scala-mode company-lsp lsp-ui lsp-mode flycheck define-word pdf-tools mu4e-alert zeal-at-point less-css-mode popup-imenu magit helm-ag exwm nginx-mode systemd expand-region thrift restclient which-key zenburn-theme xclip web-mode use-package undo-tree rainbow-mode projectile paredit multi-term markdown-mode js2-mode flymake-less fill-column-indicator eshell-git-prompt))
  '(pyvenv-workon "python-TihE9rGM")
  '(restclient-inhibit-cookies t)
  '(sbt:program-name "/usr/bin/sbt")
@@ -81,7 +82,9 @@
  '(tabbar-separator '(0.5))
  '(tramp-default-method "ssh")
  '(use-package-always-defer t)
- '(use-package-always-ensure t))
+ '(use-package-always-ensure t)
+ '(yas-snippet-dirs
+   '("/home/markschaake/.emacs.d/snippets" yasnippet-snippets-dir "/home/markschaake/emacs.git/snippets")))
  ;'(tramp-syntax (quote default))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
