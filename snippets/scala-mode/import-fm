@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: flex-model-import
+# key: i-fm
+# --
+import schaake.flex.{model => fm}

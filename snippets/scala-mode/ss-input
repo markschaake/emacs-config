@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: ss-input
+# key: ss-input
+# --
+final case class Input($1) extends InputVar.Aggregate[$2] {
+  override lazy val inputs = List($3)
+  override def unsafeGet: $2 = $2(
+    $1
+  )
+}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import-schaake-time
+# key: i-time
+# --
+import schaake.core.time

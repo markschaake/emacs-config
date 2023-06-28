@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import-cm
+# key: i-cm
+# --
+import schaake.core.{model => cm}

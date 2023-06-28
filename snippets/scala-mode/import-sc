@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import-sc
+# key: i-sc
+# --
+import schaake.client.{component => sc}

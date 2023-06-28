@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import-fc
+# key: i-fc
+# --
+import schaake.flex.client.{component => fc}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import-flc
+# key: i-flc
+# --
+import schaake.flex.client.lender.{component => flc}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: import-laminar
+# key: i-l
+# --
+import com.raquo.laminar.api._

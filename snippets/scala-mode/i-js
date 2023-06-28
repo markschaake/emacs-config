@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: import-js
+# key: i-js
+# --
+import schaake.core.JsonProtocol._
+import schaake.core.JsonProtocol.Implicits._

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: ss-codec
+# key: ss-codec
+# --
+val codec$1: Codec[$1] = deriveCodec
+implicit val (enc$1, dec$1, rw$1) = codec$1

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: adt
+# key: adt
+# --
+sealed trait $1
+object $1 {
+  case object $2 extends  $1
+}

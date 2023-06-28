@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: ss-component
+# key: ss-component
+# --
+import com.raquo.laminar.api._
+import schaake.client.{component => sc}
+
+object `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))` {
+  def apply($1) = new `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`($1)
+}
+class `(file-name-nondirectory (file-name-sans-extension (buffer-file-name)))`($1) extends sc.HtmlComponent(L.div()) {
+  override def render = elem.amend()
+}

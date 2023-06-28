@@ -62,7 +62,7 @@ Revert buffers when changed externally (like git checkout)
     (interactive)
     (eshell "new-buffer"))
   (global-set-key [remap dabbrev-expand] 'hippie-expand)
-  (global-set-key (kbd "C-j") 'newline-and-indent)
+  (global-set-key (kbd "C-j") 'newline)
   (global-set-key (kbd "C-=") 'er/expand-region)
   (global-set-key (kbd "M-i") 'popup-imenu)
   (global-set-key (kbd "M-I") 'helm-imenu-in-all-buffers)
@@ -70,8 +70,8 @@ Revert buffers when changed externally (like git checkout)
   (global-set-key (kbd "C-c C-g") 'magit-status)
   (global-set-key (kbd "C-c t") 'sc-eshell-new)
   (global-set-key (kbd "C-c l") 'org-store-link)
-  (global-set-key (kbd "C-c a") 'org-agenda)
-  (global-set-key (kbd "C-c c") 'org-capture)
+  ;(global-set-key (kbd "C-c a") 'org-agenda)
+  ;(global-set-key (kbd "C-c c") 'org-capture)
   (global-set-key (kbd "C-:") 'avy-goto-char)
   (global-set-key (kbd "C-'") 'avy-goto-char-2)
   (global-set-key (kbd "C-c y i") 'yas-insert-snippet)
@@ -121,6 +121,11 @@ Revert buffers when changed externally (like git checkout)
               (lambda ()
                 (all-the-icons-dired-mode))))
 #+END_SRC
+
+* Dired
+#+begin_src emacs-lisp :tangle yes
+(setq dired-listing-switches "-alh")
+#+end_src
 
 * Builtin Modes
 
@@ -206,7 +211,24 @@ Revert buffers when changed externally (like git checkout)
   (require 'package)
   (when (not package-archive-contents) (package-refresh-contents))
   (setq use-package-always-defer t use-package-always-ensure t)
+  (use-package quelpa
+    :ensure t
+    :config
+      (quelpa '(quelpa-use-package :fetcher git :url "https://github.com/quelpa/quelpa-use-package.git")))
+  (use-package quelpa-use-package :ensure t)
 #+END_SRC
+
+** Multiple Cursors
+#+begin_src emacs-lisp :tangle yes
+  (use-package multiple-cursors
+    :ensure t
+    :config
+      (global-set-key (kbd "C-c m c l") 'mc/edit-lines)
+      (global-set-key (kbd "C-c m c n") 'mc/mark-next-like-this))
+#+end_src
+
+#+RESULTS:
+
 ** Org Mode
 #+begin_src emacs-lisp :tangle yes
   (defun sc/org-mode-setup ()
@@ -388,14 +410,25 @@ Emacs package that lets you see the definition of a word or a phrase at point, w
     :init (global-flycheck-mode))
 #+END_SRC
 
+** Company Box
+#+begin_src emacs-lisp :tangle yes
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+#+end_src
+
 ** LSP Mode
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lsp-mode
-    :init (setq lsp-prefer-flymake nil)
+    :init
+    (setq lsp-prefer-flymake nil)
+    (setq lsp-keymap-prefix "C-c C-l")
     :hook (scala-mode . lsp)
            (lsp-mode . lsp-lens-mode)
     :config
           (add-hook 'before-save-hook 'lsp-format-buffer nil 'make-it-local)
+          (with-eval-after-load 'lsp-mode
+            (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
           (setq lsp-prefer-flymake nil))
                                           ; Add metals backend for lsp-mode
   (use-package lsp-metals)
@@ -405,6 +438,32 @@ Emacs package that lets you see the definition of a word or a phrase at point, w
     :hook (scala-mode . company-mode)
     :config
     (setq lsp-completion-provider :capf))
+#+END_SRC
+
+** Github Copilot
+#+begin_src emacs-lisp :tangle yes
+  (require 'quelpa-use-package)
+  (use-package copilot
+    :quelpa (copilot :fetcher github
+                     :repo "zerolfx/copilot.el"
+                     :branch "main"
+                     :files ("dist" "*.el"))
+    :config
+    (add-to-list 'copilot-disable-display-predicates #'company--active-p)
+    (add-hook 'prog-mode-hook 'copilot-mode)
+    (with-eval-after-load 'company
+      ;; disable inline previews
+      (delq 'company-preview-if-just-one-frontend company-frontends))
+    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
+#+end_src
+
+** Tailwind CSS
+LSP Server for Tailwind CSS
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package lsp-tailwindcss
+    :config
+    (setq lsp-tailwindcss-add-on-mode t))
 #+END_SRC
 
 ** Scala & SBT
@@ -468,15 +527,17 @@ Emacs package that lets you see the definition of a word or a phrase at point, w
 
   (defun sc-scala-set-local-keys ()
     "Set local key bindings for custom functions."
-    (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
+    (local-set-key (kbd "C-c C-b s") 'sbt-start)
     (local-set-key (kbd "C-c C-b C-r") 'sc-sbt-do-re-start)
     (local-set-key (kbd "C-c C-b c") 'sc-sbt-compile)
-    (local-set-key (kbd "C-c C-b s") 'sbt-start)
     (local-set-key (kbd "C-c C-b C-c") 'sc-sbt-compile)
+    (local-set-key (kbd "C-c C-b C-b") 'sbt-clear)
     (local-set-key (kbd "C-c C-b t") 'sc-sbt-test-only-current-buffer)
+    (local-set-key (kbd "C-c C-c C-c") 'copilot-complete)
+    (local-set-key (kbd "C-c C-c C-n") 'copilot-next-completion)
+    (local-set-key (kbd "C-c C-c C-p") 'copilot-previous-completion)
     (local-set-key (kbd "C-c s w") 'sc-scala-wrap-case-class)
-    (local-set-key (kbd "C-c l r") 'lsp-find-references)
-    (local-set-key (kbd "C-c l f") 'lsp-format-buffer))
+    (local-set-key (kbd "C-c s w") 'sc-scala-wrap-case-class))
 #+END_SRC
 ** X-Window Auto-Layouts
 Functions that auto-layout windows.
@@ -510,6 +571,15 @@ Functions that auto-layout windows.
 #+RESULTS:
 : sc/launch-google-chrome-ss
 
+* Python LSP
+#+begin_src emacs-lisp :tangle yes
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                        (require 'lsp-pyright)
+                        (lsp))))
+#+end_src
+
 * Schaake Solutions
 
 ** FLEX
@@ -523,7 +593,7 @@ Functions that auto-layout windows.
     (interactive)
     (set-process-sentinel
        (start-process "sc/flex-tail-prod" "*sc/flex-tail-prod*" (concat sc/flex--scripts-dir "flex-tail-to-file.sh") sc/flex--tail-file)
-       '(lambda (proc evt)
+       #'(lambda (proc evt)
           (progn
             (message (concat "Got event: " evt))
             (when (not (= 0 (process-exit-status proc)))
@@ -585,7 +655,7 @@ Functions that auto-layout windows.
     "Make frame ready for sc/sbt-plugins development."
     (interactive)
     (progn
-      (sc/windows--mk-sbt-project "/home/markschaake/projects/sc-sbt-plugins/")
+      (sc/windows--mk-sbt-project "/home/markschaake/projects/schaake-sbt-plugins/")
       ))
 
   (defun sc/windows-mk-servicepro ()
@@ -611,10 +681,10 @@ Functions that auto-layout windows.
         (split-window-right)
         (windmove-right)
         (sc/flex-tail-prod)
-        (windmove-left)
-        (split-window-below -15)
-        (mu4e)
-        (shell-command "/home/markschaake/bin/restart-offlineimap.sh"))))
+        (windmove-left))))
+        ;;(split-window-below -15)
+        ;;(mu4e)
+        ;;(shell-command "/home/markschaake/bin/restart-offlineimap.sh")
 
   (defun sc/windows-mk-mc ()
     "Make frames with Mark Capital browser windows."
@@ -633,6 +703,10 @@ Functions that auto-layout windows.
   (global-set-key (kbd "C-c w h") 'sc/windows-mk-homeschool)
   (global-set-key (kbd "C-c w m") 'sc/windows-mk-mc)
 #+END_SRC
+
+#+RESULTS:
+: sc/windows-mk-mc
+
 * Window Management
 
 ** EXWM Configuration
